@@ -1,0 +1,58 @@
+<div class="page">
+  <div class="toolbar">
+    <h1>Salles</h1>
+    @if (auth.isAdmin()) {
+      <button type="button" class="btn btn--primary" (click)="add()">+ Ajouter une salle</button>
+    }
+  </div>
+
+  <div class="toolbar">
+    <input
+      type="search"
+      class="toolbar__search"
+      placeholder="Rechercher (nom, adresse)…"
+      [ngModel]="searchTerm()"
+      (ngModelChange)="searchTerm.set($event)"
+    />
+  </div>
+
+  @if (loading()) {
+    <p>Chargement des salles…</p>
+  } @else if (errorMessage()) {
+    <div class="alert alert--error">{{ errorMessage() }}</div>
+  } @else if (filteredSalles().length === 0) {
+    <p class="empty-state">Aucune salle trouvée.</p>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="sortable" (click)="changeSort('nom')">
+            Nom {{ sortKey() === 'nom' ? (sortAsc() ? '▲' : '▼') : '' }}
+          </th>
+          <th class="sortable" (click)="changeSort('capacite')">
+            Capacité {{ sortKey() === 'capacite' ? (sortAsc() ? '▲' : '▼') : '' }}
+          </th>
+          <th>Adresse</th>
+          @if (auth.isAdmin()) {
+            <th></th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (salle of filteredSalles(); track salle.id) {
+          <tr>
+            <td>{{ salle.nom }}</td>
+            <td>{{ salle.capacite }}</td>
+            <td>{{ salle.adresse ?? '—' }}</td>
+            @if (auth.isAdmin()) {
+              <td class="actions">
+                <button type="button" class="btn btn--secondary btn--small" (click)="edit(salle)">Éditer</button>
+                <button type="button" class="btn btn--danger btn--small" (click)="remove(salle)">Supprimer</button>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

@@ -1,0 +1,33 @@
+<article class="event-card">
+  @if (isPopular) {
+    <div class="event-card__media">
+      <span class="badge badge--popular">⭐ Populaire</span>
+    </div>
+  }
+
+  <header>
+    <h3><a [routerLink]="['/events', event.id]">{{ event.titre }}</a></h3>
+    <span class="badge" [class.badge--full]="isComplet">
+      {{ isComplet ? 'Complet' : event.places_disponibles + ' places dispo.' }}
+    </span>
+  </header>
+
+  <p class="event-card__meta">
+    📅 {{ event.date_event | date: 'EEEE d MMMM y' }} — 🕒 {{ event.heure }}
+  </p>
+  <p class="event-card__meta" *ngIf="event.salle">📍 {{ event.salle.nom }}</p>
+  <p class="event-card__price">{{ event.prix }} €</p>
+
+  <p class="event-card__description" *ngIf="event.description">{{ event.description }}</p>
+
+  <footer>
+    <button type="button" class="btn btn--primary" [disabled]="isComplet" (click)="reserve.emit(event)">
+      Réserver
+    </button>
+
+    @if (canManage) {
+      <button type="button" class="btn btn--secondary" (click)="edit.emit(event)">Éditer</button>
+      <button type="button" class="btn btn--danger" (click)="remove.emit(event)">Supprimer</button>
+    }
+  </footer>
+</article>

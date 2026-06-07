@@ -1,0 +1,55 @@
+<div class="event-detail-page">
+  <a routerLink="/events" class="back-link">&larr; Retour à la liste</a>
+
+  @if (loading()) {
+    <p>Chargement de l'événement…</p>
+  } @else if (errorMessage()) {
+    <div class="alert alert--error">{{ errorMessage() }}</div>
+  } @else if (event(); as event) {
+    <article class="event-detail">
+      <div class="event-detail__media">
+        @if (event.places_disponibles <= 0) {
+          <span class="badge badge--full event-detail__media-badge">SOLD OUT</span>
+        } @else {
+          <span class="badge badge--popular event-detail__media-badge">⭐ Populaire</span>
+        }
+      </div>
+
+      <header class="event-detail__header">
+        <h1>{{ event.titre }}</h1>
+        <span class="badge" [class.badge--full]="event.places_disponibles <= 0">
+          {{ event.places_disponibles <= 0 ? 'Complet' : event.places_disponibles + ' places disponibles' }}
+        </span>
+      </header>
+
+      <dl class="event-detail__info">
+        <dt>Date</dt>
+        <dd>{{ event.date_event | date: 'EEEE d MMMM y' }}</dd>
+
+        <dt>Heure</dt>
+        <dd>{{ event.heure }}</dd>
+
+        <dt>Salle</dt>
+        <dd>{{ event.salle?.nom ?? '—' }} @if (event.salle?.capacite) { (capacité : {{ event.salle?.capacite }}) }</dd>
+
+        <dt>Prix</dt>
+        <dd>{{ event.prix }} €</dd>
+      </dl>
+
+      @if (event.description) {
+        <p class="event-detail__description">{{ event.description }}</p>
+      }
+
+      <div class="event-detail__actions">
+        <button type="button" class="btn btn--primary" [disabled]="event.places_disponibles <= 0" (click)="reserve()">
+          Réserver des places
+        </button>
+
+        @if (auth.isAdmin()) {
+          <button type="button" class="btn btn--secondary" (click)="edit()">Éditer</button>
+          <button type="button" class="btn btn--danger" (click)="delete()">Supprimer</button>
+        }
+      </div>
+    </article>
+  }
+</div>

@@ -1,0 +1,55 @@
+<div class="auth-page">
+  <div class="auth-page__visual" aria-hidden="true"></div>
+
+  <div class="auth-page__panel">
+    <form class="auth-card" [formGroup]="form" (ngSubmit)="submit()">
+      <h1>Créer un compte 🎉</h1>
+      <p class="auth-card__subtitle">Rejoignez Eventify pour réserver vos prochains événements.</p>
+
+      @if (errorMessage()) {
+        <p class="alert alert--error">{{ errorMessage() }}</p>
+      }
+
+      <div class="field">
+        <label for="name">Nom complet</label>
+        <input id="name" type="text" formControlName="name" placeholder="Jean Dupont" />
+        @if (f.name.invalid && f.name.touched) {
+          <span class="field-error">Le nom doit contenir au moins 2 caractères.</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="email">Adresse email</label>
+        <input id="email" type="email" formControlName="email" placeholder="vous@exemple.com" />
+        @if (f.email.invalid && f.email.touched) {
+          <span class="field-error">Veuillez saisir une adresse email valide.</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password" placeholder="••••••••" />
+        @if (f.password.invalid && f.password.touched) {
+          <span class="field-error">Le mot de passe doit contenir au moins 6 caractères.</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password_confirmation">Confirmation du mot de passe</label>
+        <input id="password_confirmation" type="password" formControlName="password_confirmation" placeholder="••••••••" />
+        @if (form.errors?.['passwordsMismatch'] && f.password_confirmation.touched) {
+          <span class="field-error">Les mots de passe ne correspondent pas.</span>
+        }
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--block" [disabled]="loading()">
+        {{ loading() ? 'Création en cours…' : 'Créer mon compte' }}
+      </button>
+
+      <p class="auth-card__hint">
+        Déjà inscrit ?
+        <a routerLink="/login">Se connecter</a>
+      </p>
+    </form>
+  </div>
+</div>

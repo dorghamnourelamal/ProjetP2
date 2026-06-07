@@ -1,0 +1,106 @@
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TicketService } from '../../../core/services/ticket';
+import { ReservationService } from '../../../core/services/reservation';
+import { Reservation } from '../../../core/models/reservation.model';
+import { TicketInput, TicketStatut } from '../../../core/models/ticket.model';
+
+/** Formulaire d'émission/édition de billet (Reactive Forms), réservé aux administrateurs. */
+@Component({
+  selector: 'app-ticket-form',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  templateUrl: './ticket-form.html',
+  styleUrl: './ticket-form.css',
+})
+export class TicketForm implements OnInit {
+  private readonly fb = inject(FormBuilder);
+
+  readonly reservations = signal<Reservation[]>([]);
+  readonly loading = signal(false);
+  readonly saving = signal(false);
+  readonly errorMessage = signal<string | null>(null);
+
+  ticketId: number | null = null;
+  isEditMode = false;
+
+  readonly statuts: TicketStatut[] = ['valide', 'utilisé', 'annulé'];
+
+  readonly form = this.fb.nonNullable.group({
+    reservation_id: [0, [Validators.required, Validators.min(1)]],
+    type: ['standard', Validators.required],
+    prix: [0, [Validators.required, Validators.min(0)]],
+    statut: ['valide' as TicketStatut, Validators.required],
+  });
+
+  constructor(
+    private ticketService: TicketService,
+    private reservationService: ReservationService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {}
+
+  ngOnInit(): void {
+    this.reservationService.list().subscribe({
+      next: (reservations) => this.reservations.set(reservations),
+      error: (err) => console.error(err),
+    });
+
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if (id) {
+      this.ticketId = Number(id);
+      this.isEditMode = true;
+      this.loading.set(true);
+
+      this.ticketService.get(this.ticketId).subscribe({
+        next: (ticket) => {
+          this.form.patchValue({
+            reservation_id: ticket.reservation_id,
+            type: ticket.type,
+            prix: ticket.prix,
+            statut: ticket.statut,
+          });
+          this.loading.set(false);
+        },
+        error: () => {
+          this.errorMessage.set('Impossible de charger ce billet.');
+          this.loading.set(false);
+        },
+      });
+    }
+  }
+
+  get f() {
+    return this.form.controls;
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.saving.set(true);
+    this.errorMessage.set(null);
+    const payload: TicketInput = this.form.getRawValue();
+
+    const request$ =
+      this.isEditMode && this.ticketId
+        ? this.ticketService.update(this.ticketId, payload)
+        : this.ticketService.create(payload);
+
+    request$.subscribe({
+      next: () => {
+        this.saving.set(false);
+        this.router.navigate(['/tickets']);
+      },
+      error: () => {
+        this.saving.set(false);
+        this.errorMessage.set('Une erreur est survenue lors de l\'enregistrement.');
+      },
+    });
+  }
+}

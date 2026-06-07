@@ -1,0 +1,108 @@
+:host {
+  display: block;
+}
+
+::ng-deep .page__header h1,
+::ng-deep .page > h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1.1rem;
+  margin: 1rem 0 2rem;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.4rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary, #0891b2), var(--color-primary-light, #22d3ee));
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(8, 145, 178, 0.14);
+}
+
+.stat-card__value {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--color-primary, #0891b2);
+}
+
+.stat-card__label {
+  color: #6b7280;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.dashboard-section {
+  margin-bottom: 2rem;
+}
+
+.dashboard-section h2 {
+  margin-bottom: 0.85rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.activity-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activity-feed li {
+  background: #f9fafb;
+  border: 1px solid #f1f5f9;
+  border-radius: 0.65rem;
+  padding: 0.65rem 0.95rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: baseline;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.activity-feed li:hover {
+  background: var(--color-primary-soft, #ecfeff);
+  border-color: rgba(8, 145, 178, 0.25);
+}
+
+.activity-feed__action {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--color-primary, #0891b2);
+  background: var(--color-primary-soft, #ecfeff);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.activity-feed time {
+  margin-left: auto;
+  color: #9ca3af;
+  font-size: 0.8rem;
+}

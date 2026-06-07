@@ -1,0 +1,54 @@
+<div class="page">
+  <div class="page__header">
+    <h1>Événements</h1>
+
+    @if (auth.isAdmin()) {
+      <button class="btn btn--primary" [routerLink]="['/events/add']">➕ Nouvel événement</button>
+    }
+  </div>
+
+  <div class="toolbar">
+    <input
+      type="search"
+      placeholder="Rechercher par titre ou salle…"
+      [ngModel]="searchTerm()"
+      (ngModelChange)="searchTerm.set($event)"
+    />
+
+    <label>
+      <input type="checkbox" [ngModel]="onlyAvailable()" (ngModelChange)="onlyAvailable.set($event)" />
+      Places disponibles uniquement
+    </label>
+
+    <span>Trier par :</span>
+    <select [ngModel]="sortKey()" (ngModelChange)="changeSort($event)">
+      <option value="date_event">Date</option>
+      <option value="titre">Titre</option>
+      <option value="prix">Prix</option>
+      <option value="places_disponibles">Places disponibles</option>
+    </select>
+    <button type="button" class="btn btn--secondary" (click)="sortAsc.set(!sortAsc())">
+      {{ sortAsc() ? '↑ Croissant' : '↓ Décroissant' }}
+    </button>
+  </div>
+
+  @if (loading()) {
+    <p>Chargement des événements…</p>
+  } @else if (errorMessage()) {
+    <p class="alert alert--error">{{ errorMessage() }}</p>
+  } @else if (filteredEvents().length === 0) {
+    <p class="empty-state">Aucun événement ne correspond à votre recherche.</p>
+  } @else {
+    <div class="grid">
+      @for (event of filteredEvents(); track event.id) {
+        <app-event-card
+          [event]="event"
+          [canManage]="auth.isAdmin()"
+          (reserve)="onReserve($event)"
+          (edit)="onEdit($event)"
+          (remove)="onDelete($event)"
+        ></app-event-card>
+      }
+    </div>
+  }
+</div>

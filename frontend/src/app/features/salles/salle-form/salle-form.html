@@ -1,0 +1,46 @@
+<div class="form-page">
+  <div class="form-page__backdrop" aria-hidden="true"></div>
+
+  <div class="form-page__content">
+  <a routerLink="/salles" class="back-link">&larr; Retour à la liste</a>
+
+  <h2>{{ isEditMode ? '✏️ Modifier la salle' : '🏛️ Ajouter une salle' }}</h2>
+
+  @if (loading()) {
+    <p>Chargement…</p>
+  } @else {
+    <form class="form-card glass-card" [formGroup]="form" (ngSubmit)="onSubmit()">
+      @if (errorMessage()) {
+        <div class="alert alert--error">{{ errorMessage() }}</div>
+      }
+
+      <div class="field">
+        <label for="nom">Nom</label>
+        <input id="nom" type="text" formControlName="nom" />
+        @if (f.nom.invalid && f.nom.touched) {
+          <small class="field-error">Le nom doit contenir au moins 2 caractères.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="capacite">Capacité</label>
+        <input id="capacite" type="number" min="1" formControlName="capacite" />
+        @if (f.capacite.invalid && f.capacite.touched) {
+          <small class="field-error">La capacité doit être supérieure à 0.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="adresse">Adresse</label>
+        <input id="adresse" type="text" formControlName="adresse" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn--primary btn--block" [disabled]="saving()">
+          {{ saving() ? 'Enregistrement…' : (isEditMode ? 'Enregistrer les modifications' : 'Ajouter la salle') }}
+        </button>
+      </div>
+    </form>
+  }
+  </div>
+</div>

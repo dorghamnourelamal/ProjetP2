@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--color-primary, #4f46e5);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.reservation-summary {
+  background: #f3f4f6;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.85rem;
+}
+
+.form-actions {
+  margin-top: 1rem;
+}

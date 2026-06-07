@@ -1,0 +1,38 @@
+<nav class="navbar">
+  <div class="navbar__brand">
+    <a routerLink="/">🎫 Gestion d'Événements</a>
+  </div>
+
+  <ul class="navbar__links">
+    <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a></li>
+    <li><a routerLink="/events" routerLinkActive="active">Événements</a></li>
+
+    <!-- "Salles" et "Billets" sont des outils de gestion : masqués pour les comptes
+         avec le rôle "user" (visiteurs et administrateurs continuent de les voir). -->
+    @if (!auth.isAuthenticated() || auth.isAdmin()) {
+      <li><a routerLink="/salles" routerLinkActive="active">Salles</a></li>
+    }
+
+    @if (auth.isAuthenticated()) {
+      <li><a routerLink="/reservations" routerLinkActive="active">Mes réservations</a></li>
+    }
+
+    @if (auth.isAdmin()) {
+      <li><a routerLink="/tickets" routerLinkActive="active">Billets</a></li>
+      <li><a routerLink="/dashboard" routerLinkActive="active">Tableau de bord</a></li>
+    }
+  </ul>
+
+  <div class="navbar__session">
+    @if (auth.isAuthenticated()) {
+      <span class="navbar__user">
+        {{ auth.currentUser()?.name }}
+        <small>({{ auth.currentUser()?.role }})</small>
+      </span>
+      <button type="button" (click)="logout()">Déconnexion</button>
+    } @else {
+      <a routerLink="/login" class="btn-link">Connexion</a>
+      <a routerLink="/register" class="btn-link btn-link--accent">Inscription</a>
+    }
+  </div>
+</nav>

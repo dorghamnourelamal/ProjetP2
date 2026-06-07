@@ -1,0 +1,62 @@
+<div class="page">
+  <div class="toolbar">
+    <h1>Billets</h1>
+    <button type="button" class="btn btn--primary" (click)="add()">+ Émettre un billet</button>
+  </div>
+
+  <div class="toolbar">
+    <input
+      type="search"
+      class="toolbar__search"
+      placeholder="Rechercher (code, type, client)…"
+      [ngModel]="searchTerm()"
+      (ngModelChange)="searchTerm.set($event)"
+    />
+  </div>
+
+  @if (loading()) {
+    <p>Chargement des billets…</p>
+  } @else if (errorMessage()) {
+    <div class="alert alert--error">{{ errorMessage() }}</div>
+  } @else if (filteredTickets().length === 0) {
+    <p class="empty-state">Aucun billet trouvé.</p>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="sortable" (click)="changeSort('code')">
+            Code {{ sortKey() === 'code' ? (sortAsc() ? '▲' : '▼') : '' }}
+          </th>
+          <th class="sortable" (click)="changeSort('type')">
+            Type {{ sortKey() === 'type' ? (sortAsc() ? '▲' : '▼') : '' }}
+          </th>
+          <th class="sortable" (click)="changeSort('prix')">
+            Prix {{ sortKey() === 'prix' ? (sortAsc() ? '▲' : '▼') : '' }}
+          </th>
+          <th class="sortable" (click)="changeSort('statut')">
+            Statut {{ sortKey() === 'statut' ? (sortAsc() ? '▲' : '▼') : '' }}
+          </th>
+          <th>Client</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (ticket of filteredTickets(); track ticket.id) {
+          <tr>
+            <td><code>{{ ticket.code }}</code></td>
+            <td>{{ ticket.type }}</td>
+            <td>{{ ticket.prix }} €</td>
+            <td>
+              <span class="badge" [class.badge--full]="ticket.statut !== 'valide'">{{ ticket.statut }}</span>
+            </td>
+            <td>{{ ticket.reservation?.nom_client ?? '—' }}</td>
+            <td class="actions">
+              <button type="button" class="btn btn--secondary btn--small" (click)="edit(ticket)">Éditer</button>
+              <button type="button" class="btn btn--danger btn--small" (click)="remove(ticket)">Supprimer</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.toolbar__search {
+  width: 100%;
+  max-width: 24rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+}
+
+.btn--small {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+}

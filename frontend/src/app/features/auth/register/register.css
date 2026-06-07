@@ -1,0 +1,84 @@
+:host {
+  display: block;
+}
+
+.auth-page {
+  min-height: calc(100vh - 64px);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+}
+
+.auth-page__visual {
+  background:
+    linear-gradient(rgba(17, 24, 39, 0.35), rgba(17, 24, 39, 0.55)),
+    url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1400&q=60')
+      center / cover no-repeat;
+}
+
+.auth-page__panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  background: #f3f4f6;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 1rem;
+  padding: 2rem 1.85rem;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-card h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.auth-card__subtitle {
+  margin: -0.5rem 0 0;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.auth-card .field input {
+  width: 100%;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.auth-card__hint {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.auth-card__hint a {
+  color: var(--color-primary, #0891b2);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-card__hint a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 860px) {
+  .auth-page {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-page__visual {
+    min-height: 220px;
+  }
+}

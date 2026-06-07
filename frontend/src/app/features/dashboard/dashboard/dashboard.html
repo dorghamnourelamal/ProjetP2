@@ -1,0 +1,99 @@
+<div class="page">
+  <h1>Tableau de bord</h1>
+
+  @if (loading()) {
+    <p>Chargement des statistiques…</p>
+  } @else if (errorMessage()) {
+    <div class="alert alert--error">{{ errorMessage() }}</div>
+  } @else if (overview(); as overview) {
+    <section class="stat-cards">
+      <article class="stat-card">
+        <span class="stat-card__value">{{ overview.totals.events }}</span>
+        <span class="stat-card__label">Événements</span>
+      </article>
+      <article class="stat-card">
+        <span class="stat-card__value">{{ overview.totals.reservations }}</span>
+        <span class="stat-card__label">Réservations</span>
+      </article>
+      <article class="stat-card">
+        <span class="stat-card__value">{{ overview.totals.places_reservees }}</span>
+        <span class="stat-card__label">Places réservées</span>
+      </article>
+    </section>
+
+    <section class="dashboard-section">
+      <h2>Top événements par réservations</h2>
+      @if (overview.top_events_by_reservations.length === 0) {
+        <p class="empty-state">Pas encore de données suffisantes.</p>
+      } @else {
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Événement</th>
+              <th>Réservations</th>
+              <th>Places réservées</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of overview.top_events_by_reservations; track row.event_id) {
+              <tr>
+                <td>
+                  @if (row.event) {
+                    <a [routerLink]="['/events', row.event.id]">{{ row.event.titre }}</a>
+                  } @else {
+                    Événement #{{ row.event_id }}
+                  }
+                </td>
+                <td>{{ row.total_reservations }}</td>
+                <td>{{ row.total_places }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+
+    <section class="dashboard-section">
+      <h2>Statistiques d'usage (MongoDB) par type de métrique</h2>
+      @if (overview.metrics_by_type.length === 0) {
+        <p class="empty-state">Aucune métrique enregistrée pour le moment.</p>
+      } @else {
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Métrique</th>
+              <th>Occurrences</th>
+              <th>Valeur cumulée</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (metric of overview.metrics_by_type; track metric._id) {
+              <tr>
+                <td>{{ metric._id }}</td>
+                <td>{{ metric.count }}</td>
+                <td>{{ metric.total }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+
+    <section class="dashboard-section">
+      <h2>Activité récente (journaux MongoDB)</h2>
+      @if (overview.recent_activity.length === 0) {
+        <p class="empty-state">Aucune activité enregistrée pour le moment.</p>
+      } @else {
+        <ul class="activity-feed">
+          @for (entry of overview.recent_activity; track entry._id) {
+            <li>
+              <span class="activity-feed__action">{{ entry.action }}</span>
+              — {{ entry.description }}
+              <time>{{ entry.created_at | date: 'dd/MM/y HH:mm' }}</time>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  }
+</div>

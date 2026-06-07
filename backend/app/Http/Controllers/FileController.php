@@ -1,0 +1,94 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Mongo\FileMeta;
+use App\Services\ActivityLogger;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+/**
+ * Gestion des fichiers liés au métier (images d'événements, justificatifs...).
+ * Le binaire est stocké sur le disque "public", les métadonnées en MongoDB
+ * (séparation données relationnelles / non structurées demandée par le cahier des charges).
+ */
+class FileController extends Controller
+{
+    public function __construct(private ActivityLogger $activityLogger)
+    {
+    }
+
+    /**
+     * Liste les fichiers, avec filtre optionnel par entité liée.
+     * GET /api/files?related_type=Event&related_id=5
+     */
+    public function index(Request $request)
+    {
+        $query = FileMeta::query();
+
+        if ($request->filled('related_type')) {
+            $query->where('related_type', $request->string('related_type'));
+        }
+
+        if ($request->filled('related_id')) {
+            $query->where('related_id', (int) $request->input('related_id'));
+        }
+
+        return response()->json($query->orderByDesc('created_at')->get());
+    }
+
+    /**
+     * Upload d'un fichier + enregistrement de ses métadonnées dans MongoDB.
+     * POST /api/files (multipart/form-data: file, related_type, related_id)
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|max:10240', // 10 Mo max
+            'related_type' => 'nullable|string|max:100',
+            'related_id' => 'nullable|integer',
+        ]);
+
+        $file = $request->file('file');
+        $filename = Str::uuid() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+        $path = $file->storeAs('uploads', $filename, 'public');
+
+        $meta = FileMeta::create([
+            'original_name' => $file->getClientOriginalName(),
+            'path' => $path,
+            'mime_type' => $file->getClientMimeType(),
+            'size' => $file->getSize(),
+            'related_type' => $request->input('related_type'),
+            'related_id' => $request->input('related_id'),
+            'uploaded_by' => $request->user()?->id,
+        ]);
+
+        $this->activityLogger->log(
+            $request->user(),
+            'upload',
+            "Téléversement du fichier '{$meta->original_name}'",
+            $request,
+            $request->input('related_type'),
+            $request->input('related_id')
+        );
+
+        return response()->json([
+            'meta' => $meta,
+            'url' => asset('storage/' . $path),
+        ], 201);
+    }
+
+    /**
+     * Supprime un fichier et ses métadonnées.
+     * DELETE /api/files/{id}
+     */
+    public function destroy(Request $request, string $id)
+    {
+        $meta = FileMeta::findOrFail($id);
+        $meta->delete();
+
+        $this->activityLogger->log($request->user(), 'delete', "Suppression du fichier '{$meta->original_name}'", $request);
+
+        return response()->json(['message' => 'Fichier supprimé avec succès']);
+    }
+}

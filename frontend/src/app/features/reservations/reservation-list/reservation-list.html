@@ -1,0 +1,62 @@
+<div class="page">
+  <h1>{{ auth.isAdmin() ? 'Toutes les réservations' : 'Mes réservations' }}</h1>
+
+  <div class="toolbar">
+    <input
+      type="search"
+      class="toolbar__search"
+      placeholder="Rechercher (nom, email, événement)…"
+      [ngModel]="searchTerm()"
+      (ngModelChange)="searchTerm.set($event)"
+    />
+  </div>
+
+  @if (loading()) {
+    <p>Chargement des réservations…</p>
+  } @else if (errorMessage()) {
+    <div class="alert alert--error">{{ errorMessage() }}</div>
+  } @else if (filteredReservations().length === 0) {
+    <p class="empty-state">Aucune réservation pour le moment.</p>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="sortable" (click)="changeSort('nom_client')">
+            Client {{ sortKey() === 'nom_client' ? (sortAsc() ? '▲' : '▼') : '' }}
+          </th>
+          <th>Email</th>
+          <th>Événement</th>
+          <th class="sortable" (click)="changeSort('nombre_places')">
+            Places {{ sortKey() === 'nombre_places' ? (sortAsc() ? '▲' : '▼') : '' }}
+          </th>
+          <th class="sortable" (click)="changeSort('created_at')">
+            Réservée le {{ sortKey() === 'created_at' ? (sortAsc() ? '▲' : '▼') : '' }}
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (reservation of filteredReservations(); track reservation.id) {
+          <tr>
+            <td>{{ reservation.nom_client }}</td>
+            <td>{{ reservation.email_client }}</td>
+            <td>
+              @if (reservation.event) {
+                <a [routerLink]="['/events', reservation.event.id]">{{ reservation.event.titre }}</a>
+              } @else {
+                —
+              }
+            </td>
+            <td>{{ reservation.nombre_places }}</td>
+            <td>{{ reservation.created_at | date: 'dd/MM/y HH:mm' }}</td>
+            <td>
+              <button type="button" class="btn btn--danger btn--small" (click)="deleteReservation(reservation)">
+                Supprimer
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
