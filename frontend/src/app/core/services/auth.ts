@@ -30,12 +30,22 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Inscription d'un nouvel utilisateur.
+   *
+   * Important :
+   * on ne connecte pas automatiquement l'utilisateur après inscription.
+   * Le backend peut renvoyer un token, mais ici on ne le stocke pas.
+   * L'utilisateur sera redirigé vers /login et devra se connecter lui-même.
+   */
   register(payload: RegisterPayload): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/register`, payload)
-      .pipe(tap((res) => this.handleAuthSuccess(res)));
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, payload);
   }
 
+  /**
+   * Connexion de l'utilisateur.
+   * Ici seulement, on stocke le token et les informations utilisateur.
+   */
   login(payload: LoginPayload): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/login`, payload)
@@ -48,7 +58,7 @@ export class AuthService {
       .pipe(tap(() => this.clearSession()));
   }
 
-  /** Récupère le profil de l'utilisateur connecté depuis l'API (rafraîchissement de session). */
+  /** Récupère le profil de l'utilisateur connecté depuis l'API. */
   fetchCurrentUser(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/me`).pipe(
       tap((user) => {
@@ -62,7 +72,7 @@ export class AuthService {
     return this.tokenSignal();
   }
 
-  /** Force la déconnexion locale (ex : après une réponse 401 de l'API). */
+  /** Force la déconnexion locale, par exemple après une réponse 401 de l'API. */
   clearSession(): void {
     this.currentUserSignal.set(null);
     this.tokenSignal.set(null);
