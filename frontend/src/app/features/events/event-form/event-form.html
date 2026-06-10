@@ -2,87 +2,104 @@
   <div class="form-page__backdrop" aria-hidden="true"></div>
 
   <div class="form-page__content">
-  <a routerLink="/events" class="back-link">&larr; Retour à la liste</a>
+    <a routerLink="/events" class="back-link">&larr; Retour à la liste</a>
 
-  <h2>{{ isEditMode ? '✏️ Modifier l\'événement' : '➕ Ajouter un nouvel événement' }}</h2>
+    <h2>{{ isEditMode ? '✏️ Modifier l\'événement' : '➕ Ajouter un nouvel événement' }}</h2>
 
-  @if (loading()) {
-    <p>Chargement…</p>
-  } @else {
-    <form class="form-card glass-card" [formGroup]="form" (ngSubmit)="onSubmit()">
-      @if (errorMessage()) {
-        <div class="alert alert--error">{{ errorMessage() }}</div>
-      }
-
-      <div class="field">
-        <label for="titre">Titre</label>
-        <input id="titre" type="text" formControlName="titre" />
-        @if (f.titre.invalid && f.titre.touched) {
-          <small class="field-error">Le titre doit contenir au moins 3 caractères.</small>
+    @if (loading()) {
+      <p>Chargement…</p>
+    } @else {
+      <form class="form-card glass-card" [formGroup]="form" (ngSubmit)="onSubmit()">
+        @if (errorMessage()) {
+          <div class="alert alert--error">{{ errorMessage() }}</div>
         }
-      </div>
 
-      <div class="field">
-        <label for="description">Description</label>
-        <textarea id="description" formControlName="description" rows="4"></textarea>
-      </div>
-
-      <div class="field-row">
         <div class="field">
-          <label for="date_event">Date</label>
-          <input id="date_event" type="date" formControlName="date_event" />
-          @if (f.date_event.invalid && f.date_event.touched) {
-            <small class="field-error">La date est obligatoire.</small>
+          <label for="titre">Titre</label>
+          <input id="titre" type="text" formControlName="titre" />
+          @if (f.titre.invalid && f.titre.touched) {
+            <small class="field-error">Le titre doit contenir au moins 3 caractères.</small>
           }
         </div>
 
         <div class="field">
-          <label for="heure">Heure</label>
-          <input id="heure" type="time" formControlName="heure" />
-          @if (f.heure.invalid && f.heure.touched) {
-            <small class="field-error">L'heure est obligatoire.</small>
-          }
+          <label for="description">Description</label>
+          <textarea id="description" formControlName="description" rows="4"></textarea>
         </div>
-      </div>
 
-      <div class="field-row">
+        <div class="field-row">
+          <div class="field">
+            <label for="date_event">Date</label>
+            <input id="date_event" type="date" formControlName="date_event" />
+            @if (f.date_event.invalid && f.date_event.touched) {
+              <small class="field-error">La date est obligatoire.</small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="heure">Heure</label>
+            <input id="heure" type="time" formControlName="heure" />
+            @if (f.heure.invalid && f.heure.touched) {
+              <small class="field-error">L'heure est obligatoire.</small>
+            }
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="places_disponibles">Places disponibles</label>
+            <input id="places_disponibles" type="number" min="0" formControlName="places_disponibles" />
+            <small class="field-hint">Ne peut pas dépasser la capacité de la salle choisie.</small>
+            @if (f.places_disponibles.invalid && f.places_disponibles.touched) {
+              <small class="field-error">
+                Le nombre de places doit être positif et ne peut pas dépasser la capacité de la salle.
+              </small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="prix">Prix (€)</label>
+            <input id="prix" type="number" min="0" step="0.01" formControlName="prix" />
+            @if (f.prix.invalid && f.prix.touched) {
+              <small class="field-error">Le prix doit être positif.</small>
+            }
+          </div>
+        </div>
+
         <div class="field">
-          <label for="places_disponibles">Places disponibles</label>
-          <input id="places_disponibles" type="number" min="0" formControlName="places_disponibles" />
-          <small class="field-hint">Ne peut pas dépasser la capacité de la salle choisie.</small>
-          @if (f.places_disponibles.invalid && f.places_disponibles.touched) {
-            <small class="field-error">Le nombre de places doit être positif et ne peut pas dépasser la capacité de la salle.</small>
+          <label for="salle_id">Salle</label>
+          <select id="salle_id" formControlName="salle_id">
+            <option [value]="0" disabled>Choisir une salle…</option>
+            @for (salle of salles(); track salle.id) {
+              <option [value]="salle.id">
+                {{ salle.nom }} (capacité : {{ salle.capacite }})
+              </option>
+            }
+          </select>
+          @if (f.salle_id.invalid && f.salle_id.touched) {
+            <small class="field-error">Veuillez choisir une salle.</small>
           }
         </div>
 
         <div class="field">
-          <label for="prix">Prix (€)</label>
-          <input id="prix" type="number" min="0" step="0.01" formControlName="prix" />
-          @if (f.prix.invalid && f.prix.touched) {
-            <small class="field-error">Le prix doit être positif.</small>
-          }
+          <label for="image">Image de l'événement</label>
+          <input
+            id="image"
+            type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+          />
+          <small class="field-hint">
+            L'image sera stockée dans Laravel et ses métadonnées seront enregistrées dans MongoDB.
+          </small>
         </div>
-      </div>
 
-      <div class="field">
-        <label for="salle_id">Salle</label>
-        <select id="salle_id" formControlName="salle_id">
-          <option [value]="0" disabled>Choisir une salle…</option>
-          @for (salle of salles(); track salle.id) {
-            <option [value]="salle.id">{{ salle.nom }} (capacité : {{ salle.capacite }})</option>
-          }
-        </select>
-        @if (f.salle_id.invalid && f.salle_id.touched) {
-          <small class="field-error">Veuillez choisir une salle.</small>
-        }
-      </div>
-
-      <div class="form-actions">
-        <button type="submit" class="btn btn--primary btn--block" [disabled]="saving()">
-          {{ saving() ? 'Enregistrement…' : (isEditMode ? 'Enregistrer les modifications' : "Créer l'événement") }}
-        </button>
-      </div>
-    </form>
-  }
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary btn--block" [disabled]="saving()">
+            {{ saving() ? 'Enregistrement…' : (isEditMode ? 'Enregistrer les modifications' : "Créer l'événement") }}
+          </button>
+        </div>
+      </form>
+    }
   </div>
 </div>

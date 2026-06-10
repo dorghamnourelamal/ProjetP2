@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/vendor/
+
+# Laravel
+backend/.env
+backend/storage/app/*
+!backend/storage/app/.gitignore
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+backend/bootstrap/cache/*.php
+
+# Angular build
+frontend/dist/
+frontend/.angular/
+frontend/.cache/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Uploads
+backend/storage/app/public/uploads/
+backend/public/storage

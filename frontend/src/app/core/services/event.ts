@@ -4,11 +4,10 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Event, EventInput } from '../models/event.model';
 
-/**
- * Service métier "Événements" : externalise tous les appels HTTP vers l'API Laravel
- * et expose des Observables RxJS consommés par les composants (architecture en couches).
- */
-@Injectable({ providedIn: 'root' })
+
+@Injectable({
+  providedIn: 'root',
+})
 export class EventService {
   private readonly apiUrl = `${environment.apiUrl}/events`;
 

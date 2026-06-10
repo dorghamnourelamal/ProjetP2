@@ -4,11 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth';
 
-/**
- * Page de connexion : formulaire réactif (Reactive Forms) avec validation
- * synchrone, gestion d'état de chargement/erreur via signaux, et redirection
- * vers l'URL initialement demandée (returnUrl) après authentification.
- */
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -21,6 +17,7 @@ export class Login {
 
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
+  readonly successMessage = signal<string | null>(null);
 
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -31,7 +28,13 @@ export class Login {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+    const registered = this.route.snapshot.queryParamMap.get('registered');
+
+    if (registered === 'success') {
+      this.successMessage.set('Compte créé avec succès. Vous pouvez maintenant vous connecter.');
+    }
+  }
 
   get f() {
     return this.form.controls;
@@ -45,12 +48,14 @@ export class Login {
 
     this.loading.set(true);
     this.errorMessage.set(null);
+    this.successMessage.set(null);
 
     const { email, password } = this.form.getRawValue();
 
     this.authService.login({ email: email!, password: password! }).subscribe({
       next: () => {
         this.loading.set(false);
+
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/events';
         this.router.navigateByUrl(returnUrl);
       },

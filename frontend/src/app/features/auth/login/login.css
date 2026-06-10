@@ -89,3 +89,8 @@
     min-height: 220px;
   }
 }
+.alert--success {
+  background: #e7f8ee;
+  color: #146c43;
+  border: 1px solid #b7ebc8;
+}

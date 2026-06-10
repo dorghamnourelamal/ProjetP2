@@ -3,8 +3,12 @@
 
   <div class="auth-page__panel">
     <form class="auth-card" [formGroup]="form" (ngSubmit)="submit()">
-      <h1>Bienvenue 👋</h1>
+      <h1>Bienvenue </h1>
       <p class="auth-card__subtitle">Connectez-vous pour réserver vos prochains événements.</p>
+
+      @if (successMessage()) {
+        <p class="alert alert--success">{{ successMessage() }}</p>
+      }
 
       @if (errorMessage()) {
         <p class="alert alert--error">{{ errorMessage() }}</p>
@@ -13,6 +17,7 @@
       <div class="field">
         <label for="email">Adresse email</label>
         <input id="email" type="email" formControlName="email" placeholder="vous@exemple.com" />
+
         @if (f.email.invalid && f.email.touched) {
           <span class="field-error">Veuillez saisir une adresse email valide.</span>
         }
@@ -21,6 +26,7 @@
       <div class="field">
         <label for="password">Mot de passe</label>
         <input id="password" type="password" formControlName="password" placeholder="••••••••" />
+
         @if (f.password.invalid && f.password.touched) {
           <span class="field-error">Le mot de passe doit contenir au moins 6 caractères.</span>
         }
@@ -36,7 +42,9 @@
       </p>
 
       <p class="auth-card__demo">
-        Comptes de démo : admin&#64;evenements.test / user&#64;evenements.test (mot de passe : password)
+        Comptes de démo : admin&#64;evenements.test / user&#64;evenements.test
+        <br />
+        Mot de passe : password
       </p>
     </form>
   </div>

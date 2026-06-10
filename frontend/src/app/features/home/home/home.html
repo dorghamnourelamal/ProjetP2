@@ -1,51 +1,52 @@
-<section class="hero">
-  <div class="hero__overlay"></div>
-  <div class="hero__content">
-    <h1>Réservez votre prochain événement 🎉</h1>
-    <p>
-      Concerts, conférences, spectacles, ateliers… découvrez les événements organisés près de chez
-      vous et réservez vos places en quelques clics.
-    </p>
-    <div class="hero__actions">
-      <a class="btn btn--primary btn--lg" routerLink="/events">Explorer les événements</a>
+<section class="home-hero">
+  <div class="home-hero__content">
+    <h1>Book Your Next Event </h1>
+    <p>Discover and reserve amazing events with Eventify</p>
+
+    <div class="home-hero__actions">
+      <a routerLink="/events" class="btn btn--primary btn--lg">Explore Events</a>
+
       @if (!auth.isAuthenticated()) {
-        <a class="btn btn--ghost btn--lg" routerLink="/register">Créer un compte</a>
+        <a routerLink="/register" class="btn btn--ghost btn--lg">Create Account</a>
       }
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="section__header">
-    <h2>Événements à la une</h2>
-    <a routerLink="/events" class="link-more">Voir plus d'événements →</a>
+<section class="home-section">
+  <div class="home-section__header">
+    <h2>Featured Events</h2>
+    <a routerLink="/events" class="link-more">Voir tous les événements →</a>
   </div>
 
   @if (loading()) {
-    <p>Chargement des événements…</p>
+    <p class="empty-state">Chargement des événements…</p>
   } @else if (errorMessage()) {
     <p class="alert alert--error">{{ errorMessage() }}</p>
   } @else if (featuredEvents().length === 0) {
-    <p class="empty-state">Aucun événement à venir pour le moment. Revenez bientôt !</p>
+    <p class="empty-state">Aucun événement à venir pour le moment.</p>
   } @else {
     <div class="featured-grid">
       @for (event of featuredEvents(); track event.id) {
-        <article class="event-card-home">
-          <div class="event-card-home__media">
-            <span class="badge badge--popular">Populaire</span>
+        <article class="home-event-card">
+          <div class="home-event-card__image">
+            <span class="home-event-card__badge">Event</span>
           </div>
-          <div class="event-card-home__body">
+
+          <div class="home-event-card__body">
             <h3>{{ event.titre }}</h3>
-            <p class="event-card-home__meta">
-              📅 {{ formatDate(event.date_event) }} à {{ event.heure }}
-            </p>
+
+            <p> Date : {{ formatDate(event.date_event) }} {{ event.heure }}</p>
+
             @if (event.salle) {
-              <p class="event-card-home__meta">📍 {{ event.salle.nom }}</p>
+              <p> Location : {{ event.salle.nom }}</p>
             }
-            <div class="event-card-home__footer">
-              <span class="event-card-home__price">{{ event.prix }} DA</span>
-              <a class="btn btn--primary" [routerLink]="['/events', event.id]">Voir / Réserver</a>
-            </div>
+
+            <p class="home-event-card__price">{{ event.prix }} DA</p>
+
+            <a class="btn btn--primary btn--block" [routerLink]="['/events', event.id]">
+              Voir plus de détails
+            </a>
           </div>
         </article>
       }
@@ -53,24 +54,26 @@
   }
 </section>
 
-<section class="section section--contact">
-  <div class="section__header">
-    <h2>Une question ? Contactez-nous</h2>
+<section class="home-section contact-section">
+  <div class="home-section__header">
+    <h2>Contact</h2>
   </div>
 
   <div class="contact-grid">
     <div class="contact-card">
       <div class="contact-card__icon">📞</div>
       <h3>Appelez-nous</h3>
-      <p>Notre équipe est disponible du lundi au vendredi, de 9h à 18h.</p>
+      <p>Notre équipe est disponible pour vos questions.</p>
       <a href="tel:+213000000000">+213 00 00 00 00</a>
     </div>
 
     <div class="contact-card">
       <div class="contact-card__icon">✉️</div>
       <h3>Support par email</h3>
-      <p>Une question sur une réservation ou un événement ? Écrivez-nous directement.</p>
-      <button type="button" class="btn-link-action" (click)="openContactForm()">Ouvrir le formulaire de contact</button>
+      <p>Écrivez-nous pour toute demande concernant une réservation.</p>
+      <button type="button" class="btn-link-action" (click)="openContactForm()">
+        Ouvrir le formulaire
+      </button>
     </div>
   </div>
 </section>
@@ -90,21 +93,46 @@
 
       <form (ngSubmit)="submitContact()">
         @if (contactFeedback()) {
-          <div class="alert" [class.alert--success]="contactFeedback()?.type === 'success'" [class.alert--error]="contactFeedback()?.type === 'error'">
+          <div
+            class="alert"
+            [class.alert--success]="contactFeedback()?.type === 'success'"
+            [class.alert--error]="contactFeedback()?.type === 'error'"
+          >
             {{ contactFeedback()?.text }}
           </div>
         }
 
         <div class="field">
-          <input type="text" placeholder="Your Name" [ngModel]="contactName()" (ngModelChange)="contactName.set($event)" name="contactName" required />
+          <input
+            type="text"
+            placeholder="Your Name"
+            [ngModel]="contactName()"
+            (ngModelChange)="contactName.set($event)"
+            name="contactName"
+            required
+          />
         </div>
 
         <div class="field">
-          <input type="email" placeholder="Your Email" [ngModel]="contactEmail()" (ngModelChange)="contactEmail.set($event)" name="contactEmail" required />
+          <input
+            type="email"
+            placeholder="Your Email"
+            [ngModel]="contactEmail()"
+            (ngModelChange)="contactEmail.set($event)"
+            name="contactEmail"
+            required
+          />
         </div>
 
         <div class="field">
-          <textarea placeholder="Write your message..." rows="4" [ngModel]="contactMessage()" (ngModelChange)="contactMessage.set($event)" name="contactMessage" required></textarea>
+          <textarea
+            placeholder="Write your message..."
+            rows="4"
+            [ngModel]="contactMessage()"
+            (ngModelChange)="contactMessage.set($event)"
+            name="contactMessage"
+            required
+          ></textarea>
         </div>
 
         <button type="submit" class="btn btn--primary btn--block" [disabled]="contactSending()">
@@ -116,5 +144,5 @@
 }
 
 <footer class="home-footer">
-  <p>© 2026 Gestion d'Événements | Reservation System</p>
+  <p>© 2026 Eventify | Reservation System</p>
 </footer>

@@ -1,5 +1,17 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.82)),
+    url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
 .app-content {
-  max-width: 1200px;
+  max-width: 1250px;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 2rem;
+  color: white;
 }

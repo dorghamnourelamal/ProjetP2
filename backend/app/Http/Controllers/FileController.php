@@ -27,14 +27,16 @@ class FileController extends Controller
         $query = FileMeta::query();
 
         if ($request->filled('related_type')) {
-            $query->where('related_type', $request->string('related_type'));
+            $query->where('related_type', $request->query('related_type'));
         }
 
         if ($request->filled('related_id')) {
-            $query->where('related_id', (int) $request->input('related_id'));
+            $query->where('related_id', (string) $request->query('related_id'));
         }
 
-        return response()->json($query->orderByDesc('created_at')->get());
+        return response()->json(
+            $query->orderBy('created_at', 'desc')->get()
+        );
     }
 
     /**

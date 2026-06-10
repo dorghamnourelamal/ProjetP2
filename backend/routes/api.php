@@ -14,11 +14,7 @@ Route::get('/test', function () {
     return response()->json(['message' => 'API Laravel OK']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Authentification (Laravel Sanctum - tokens Bearer pour l'app Angular)
-|--------------------------------------------------------------------------
-*/
+
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
@@ -27,11 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Lecture publique : consultation des événements/salles/billets sans connexion
-|--------------------------------------------------------------------------
-*/
+
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/events/{event}', [EventController::class, 'show']);
 Route::get('/salles', [SalleController::class, 'index']);
@@ -39,29 +31,27 @@ Route::get('/salles/{salle}', [SalleController::class, 'show']);
 Route::get('/tickets', [TicketController::class, 'index']);
 Route::get('/tickets/{ticket}', [TicketController::class, 'show']);
 
+// IMPORTANT : route publique pour afficher les images dans Angular
+Route::get('/files', [FileController::class, 'index']);
+
 // Formulaire de contact (page d'accueil) : envoie un email au propriétaire du site
 Route::post('/contact', [ContactController::class, 'send']);
 
-/*
-|--------------------------------------------------------------------------
-| Routes protégées : nécessitent un token Sanctum valide
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware('auth:sanctum')->group(function () {
 
     // Réservations : un utilisateur connecté peut réserver / consulter / annuler
     Route::apiResource('reservations', ReservationController::class)->except(['update']);
 
-    // Fichiers : upload/listage/suppression de pièces jointes (images, justificatifs...)
-    Route::get('/files', [FileController::class, 'index']);
+    // Fichiers : upload/suppression protégés
     Route::post('/files', [FileController::class, 'store']);
     Route::delete('/files/{id}', [FileController::class, 'destroy']);
 
-    // Statistiques & audit (consultables par tout utilisateur connecté ; affinage possible par rôle)
+    // Statistiques & audit
     Route::get('/stats/overview', [StatController::class, 'overview']);
     Route::get('/stats/activity', [StatController::class, 'activity']);
 
-    // Gestion (CRUD complet) réservée aux administrateurs
+    // Gestion réservée aux administrateurs
     Route::middleware('role:admin')->group(function () {
         Route::apiResource('events', EventController::class)->except(['index', 'show']);
         Route::apiResource('salles', SalleController::class)->except(['index', 'show']);
