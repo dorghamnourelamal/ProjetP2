@@ -6,11 +6,6 @@ import { EventService } from '../../../core/services/event';
 import { AuthService } from '../../../core/services/auth';
 import { Event } from '../../../core/models/event.model';
 
-/**
- * Fiche détaillée d'un événement : routage dynamique avec paramètre d'URL (/events/:id),
- * lecture réactive du paramètre via ActivatedRoute.paramMap + RxJS (switchMap)
- * pour que la page se mette à jour si l'on navigue d'une fiche à une autre.
- */
 @Component({
   selector: 'app-event-detail',
   standalone: true,
@@ -36,6 +31,7 @@ export class EventDetail implements OnInit {
         switchMap((params) => {
           this.loading.set(true);
           this.errorMessage.set(null);
+
           return this.eventService.get(Number(params.get('id')));
         }),
       )
@@ -53,6 +49,7 @@ export class EventDetail implements OnInit {
 
   reserve(): void {
     const event = this.event();
+
     if (event) {
       this.router.navigate(['/events', event.id, 'reserve']);
     }
@@ -60,6 +57,7 @@ export class EventDetail implements OnInit {
 
   edit(): void {
     const event = this.event();
+
     if (event) {
       this.router.navigate(['/events', event.id, 'edit']);
     }
@@ -67,6 +65,7 @@ export class EventDetail implements OnInit {
 
   delete(): void {
     const event = this.event();
+
     if (!event || !confirm(`Supprimer l'événement "${event.titre}" ?`)) {
       return;
     }

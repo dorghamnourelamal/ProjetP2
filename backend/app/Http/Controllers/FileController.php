@@ -5,13 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Mongo\FileMeta;
 use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-/**
- * Gestion des fichiers liés au métier (images d'événements, justificatifs...).
- * Le binaire est stocké sur le disque "public", les métadonnées en MongoDB
- * (séparation données relationnelles / non structurées demandée par le cahier des charges).
- */
 class FileController extends Controller
 {
     public function __construct(private ActivityLogger $activityLogger)
@@ -40,19 +36,46 @@ class FileController extends Controller
     }
 
     /**
+     * Affiche le contenu d'un fichier stocké.
+     * GET /api/files/{id}/content
+     */
+    public function content(string $id)
+    {
+        $meta = FileMeta::findOrFail($id);
+
+        if (! Storage::disk('public')->exists($meta->path)) {
+            return response()->json([
+                'message' => 'Fichier introuvable sur le disque.'
+            ], 404);
+        }
+
+        $fullPath = Storage::disk('public')->path($meta->path);
+
+        return response()->file($fullPath, [
+            'Content-Type' => $meta->mime_type,
+        ]);
+    }
+
+    /**
      * Upload d'un fichier + enregistrement de ses métadonnées dans MongoDB.
-     * POST /api/files (multipart/form-data: file, related_type, related_id)
+     * POST /api/files
      */
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|max:10240', // 10 Mo max
+            'file' => 'required|file|max:10240',
             'related_type' => 'nullable|string|max:100',
             'related_id' => 'nullable|integer',
         ]);
 
         $file = $request->file('file');
-        $filename = Str::uuid() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+
+        $filename = Str::uuid()
+            . '_'
+            . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+            . '.'
+            . $file->getClientOriginalExtension();
+
         $path = $file->storeAs('uploads', $filename, 'public');
 
         $meta = FileMeta::create([
@@ -76,7 +99,7 @@ class FileController extends Controller
 
         return response()->json([
             'meta' => $meta,
-            'url' => asset('storage/' . $path),
+            'url' => route('files.content', ['id' => $meta->_id]),
         ], 201);
     }
 
@@ -87,9 +110,19 @@ class FileController extends Controller
     public function destroy(Request $request, string $id)
     {
         $meta = FileMeta::findOrFail($id);
+
+        if (Storage::disk('public')->exists($meta->path)) {
+            Storage::disk('public')->delete($meta->path);
+        }
+
         $meta->delete();
 
-        $this->activityLogger->log($request->user(), 'delete', "Suppression du fichier '{$meta->original_name}'", $request);
+        $this->activityLogger->log(
+            $request->user(),
+            'delete',
+            "Suppression du fichier '{$meta->original_name}'",
+            $request
+        );
 
         return response()->json(['message' => 'Fichier supprimé avec succès']);
     }

@@ -2,6 +2,8 @@
   <div class="event-card__media">
     @if (imageUrl) {
       <img [src]="imageUrl" [alt]="event.titre" class="event-card__image" />
+    } @else {
+      <div class="event-card__placeholder"></div>
     }
 
     @if (isComplet) {

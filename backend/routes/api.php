@@ -33,7 +33,7 @@ Route::get('/tickets/{ticket}', [TicketController::class, 'show']);
 
 // IMPORTANT : route publique pour afficher les images dans Angular
 Route::get('/files', [FileController::class, 'index']);
-
+Route::get('/files/{id}/content', [FileController::class, 'content'])->name('files.content');
 // Formulaire de contact (page d'accueil) : envoie un email au propriétaire du site
 Route::post('/contact', [ContactController::class, 'send']);
 

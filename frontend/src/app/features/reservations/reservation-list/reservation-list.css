@@ -10,6 +10,46 @@
   border-radius: 0.5rem;
 }
 
+.data-table {
+  width: 100%;
+  background: #ffffff;
+  color: #111827;
+  border-collapse: collapse;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.data-table th,
+.data-table td {
+  color: #111827;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.data-table thead th {
+  background: #f9fafb;
+  color: #111827;
+  font-weight: 600;
+}
+
+.data-table tbody tr {
+  background: #ffffff;
+}
+
+.data-table tbody tr:hover {
+  background: #f3f4f6;
+}
+
+.data-table a {
+  color: #0ea5e9;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.data-table a:hover {
+  text-decoration: underline;
+}
+
 .btn--small {
   padding: 0.3rem 0.6rem;
   font-size: 0.85rem;

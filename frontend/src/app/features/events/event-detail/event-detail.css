@@ -20,7 +20,8 @@
 }
 
 .event-detail {
-  background: #fff;
+  background: #ffffff;
+  color: #111827;
   border: 1px solid #e5e7eb;
   border-radius: 1rem;
   overflow: hidden;
@@ -28,18 +29,41 @@
 }
 
 .event-detail__media {
-  height: 160px;
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+  background: #e0f2fe;
+}
+
+.event-detail__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.event-detail__placeholder {
+  width: 100%;
+  height: 100%;
   background:
     linear-gradient(135deg, rgba(8, 145, 178, 0.85), rgba(14, 116, 144, 0.9)),
     url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=60')
-      center / cover no-repeat;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: 1rem;
+    center / cover no-repeat;
+}
+
+.event-detail__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.12), rgba(14, 116, 144, 0.18));
+  pointer-events: none;
 }
 
 .event-detail__media-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
   font-size: 0.8rem;
 }
 
@@ -53,7 +77,9 @@
 
 .event-detail__header h1 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
+  color: #111827;
+  font-weight: 800;
 }
 
 .event-detail__info {
@@ -67,8 +93,8 @@
 }
 
 .event-detail__info dt {
-  font-weight: 600;
-  color: #6b7280;
+  font-weight: 700;
+  color: #4b5563;
 }
 
 .event-detail__info dd {

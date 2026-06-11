@@ -12,11 +12,11 @@ export interface Event {
   salle_id: number;
   salle?: Salle;
   reservations?: Reservation[];
+  image_url?: string | null;
   created_at?: string;
   updated_at?: string;
 }
 
-/** Forme utilisée par le formulaire de création/édition (sans champs calculés/relations). */
 export interface EventInput {
   titre: string;
   description?: string | null;
