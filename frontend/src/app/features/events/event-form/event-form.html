@@ -30,30 +30,27 @@
         <div class="field-row">
           <div class="field">
             <label for="date_event">Date</label>
-            <input id="date_event" type="date" formControlName="date_event" />
+            <input id="date_event" type="date" formControlName="date_event" [min]="minDate" />
             @if (f.date_event.invalid && f.date_event.touched) {
-              <small class="field-error">La date est obligatoire.</small>
+              <small class="field-error">La date est obligatoire et ne doit pas être passée.</small>
             }
           </div>
 
           <div class="field">
-            <label for="heure">Heure</label>
+            <label for="heure">Heure de début</label>
             <input id="heure" type="time" formControlName="heure" />
             @if (f.heure.invalid && f.heure.touched) {
-              <small class="field-error">L'heure est obligatoire.</small>
+              <small class="field-error">L'heure de début est obligatoire.</small>
             }
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="places_disponibles">Places disponibles</label>
-            <input id="places_disponibles" type="number" min="0" formControlName="places_disponibles" />
-            <small class="field-hint">Ne peut pas dépasser la capacité de la salle choisie.</small>
-            @if (f.places_disponibles.invalid && f.places_disponibles.touched) {
-              <small class="field-error">
-                Le nombre de places doit être positif et ne peut pas dépasser la capacité de la salle.
-              </small>
+            <label for="heure_fin">Heure de fin</label>
+            <input id="heure_fin" type="time" formControlName="heure_fin" />
+            @if (f.heure_fin.invalid && f.heure_fin.touched) {
+              <small class="field-error">L'heure de fin est obligatoire.</small>
             }
           </div>
 
@@ -66,19 +63,32 @@
           </div>
         </div>
 
-        <div class="field">
-          <label for="salle_id">Salle</label>
-          <select id="salle_id" formControlName="salle_id">
-            <option [value]="0" disabled>Choisir une salle…</option>
-            @for (salle of salles(); track salle.id) {
-              <option [value]="salle.id">
-                {{ salle.nom }} (capacité : {{ salle.capacite }})
-              </option>
+        <div class="field-row">
+          <div class="field">
+            <label for="places_disponibles">Places disponibles</label>
+            <input id="places_disponibles" type="number" min="1" formControlName="places_disponibles" />
+            <small class="field-hint">Ne peut pas dépasser la capacité de la salle choisie.</small>
+            @if (f.places_disponibles.invalid && f.places_disponibles.touched) {
+              <small class="field-error">
+                Le nombre de places doit être supérieur à 0 et ne peut pas dépasser la capacité de la salle.
+              </small>
             }
-          </select>
-          @if (f.salle_id.invalid && f.salle_id.touched) {
-            <small class="field-error">Veuillez choisir une salle.</small>
-          }
+          </div>
+
+          <div class="field">
+            <label for="salle_id">Salle</label>
+            <select id="salle_id" formControlName="salle_id">
+              <option [value]="0" disabled>Choisir une salle…</option>
+              @for (salle of salles(); track salle.id) {
+                <option [value]="salle.id">
+                  {{ salle.nom }} (capacité : {{ salle.capacite }})
+                </option>
+              }
+            </select>
+            @if (f.salle_id.invalid && f.salle_id.touched) {
+              <small class="field-error">Veuillez choisir une salle.</small>
+            }
+          </div>
         </div>
 
         <div class="field">

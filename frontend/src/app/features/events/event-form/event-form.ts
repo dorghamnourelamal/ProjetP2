@@ -8,7 +8,7 @@ import { SalleService } from '../../../core/services/salle';
 import { FileService } from '../../../core/services/file';
 
 import { Salle } from '../../../core/models/salle.model';
-import { EventInput } from '../../../core/models/event.model';
+import { Event as AppEvent, EventInput } from '../../../core/models/event.model';
 
 @Component({
   selector: 'app-event-form',
@@ -21,22 +21,24 @@ export class EventForm implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   readonly salles = signal<Salle[]>([]);
+  readonly events = signal<AppEvent[]>([]);
   readonly loading = signal(false);
   readonly saving = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
   eventId: number | null = null;
   isEditMode = false;
-
-  // Fichier image sélectionné dans le formulaire
   selectedFile: File | null = null;
+
+  readonly minDate = this.getTodayDate();
 
   readonly form = this.fb.nonNullable.group({
     titre: ['', [Validators.required, Validators.minLength(3)]],
     description: [''],
     date_event: ['', Validators.required],
     heure: ['', Validators.required],
-    places_disponibles: [0, [Validators.required, Validators.min(0)]],
+    heure_fin: ['', Validators.required],
+    places_disponibles: [0, [Validators.required, Validators.min(1)]],
     prix: [0, [Validators.required, Validators.min(0)]],
     salle_id: [0, [Validators.required, Validators.min(1)]],
   });
@@ -55,13 +57,18 @@ export class EventForm implements OnInit {
       error: (err) => console.error(err),
     });
 
+    this.eventService.list().subscribe({
+      next: (events) => this.events.set(events),
+      error: (err) => console.error(err),
+    });
+
     this.form.controls.salle_id.valueChanges.subscribe((salleId) => {
       const salle = this.salles().find((s) => s.id === Number(salleId));
 
       if (salle) {
         this.form.controls.places_disponibles.setValidators([
           Validators.required,
-          Validators.min(0),
+          Validators.min(1),
           Validators.max(salle.capacite),
         ]);
 
@@ -84,7 +91,8 @@ export class EventForm implements OnInit {
               titre: data.titre,
               description: data.description ?? '',
               date_event: data.date_event,
-              heure: data.heure,
+              heure: this.normalizeTime(data.heure),
+              heure_fin: this.normalizeTime(data.heure_fin),
               places_disponibles: data.places_disponibles,
               prix: data.prix,
               salle_id: data.salle_id,
@@ -106,7 +114,7 @@ export class EventForm implements OnInit {
     return this.form.controls;
   }
 
-  onFileSelected(event: Event): void {
+  onFileSelected(event: globalThis.Event): void {
     const input = event.target as HTMLInputElement;
 
     if (input.files && input.files.length > 0) {
@@ -115,15 +123,35 @@ export class EventForm implements OnInit {
   }
 
   onSubmit(): void {
+    this.errorMessage.set(null);
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    this.saving.set(true);
-    this.errorMessage.set(null);
-
     const payload: EventInput = this.form.getRawValue();
+
+    if (this.isDateTimeInPast(payload.date_event, payload.heure)) {
+      this.errorMessage.set("La date et l'heure de début doivent être supérieures à la date et l'heure actuelles.");
+      return;
+    }
+
+    if (!this.isEndTimeAfterStartTime(payload.heure, payload.heure_fin)) {
+      this.errorMessage.set("L'heure de fin doit être supérieure à l'heure de début.");
+      return;
+    }
+
+    const conflict = this.findSalleConflict(payload);
+
+    if (conflict) {
+      this.errorMessage.set(
+        `Cette salle est déjà occupée de ${this.normalizeTime(conflict.heure)} à ${this.normalizeTime(conflict.heure_fin)} pour l'événement "${conflict.titre}".`,
+      );
+      return;
+    }
+
+    this.saving.set(true);
 
     const request$ =
       this.isEditMode && this.eventId
@@ -152,10 +180,61 @@ export class EventForm implements OnInit {
           this.router.navigate(this.isEditMode ? ['/events', id] : ['/events']);
         }
       },
-      error: () => {
+      error: (error) => {
         this.saving.set(false);
-        this.errorMessage.set("Une erreur est survenue lors de l'enregistrement.");
+
+        const backendMessage =
+          error?.error?.errors?.date_event?.[0] ||
+          error?.error?.errors?.heure_fin?.[0] ||
+          error?.error?.errors?.salle_id?.[0] ||
+          error?.error?.message ||
+          "Une erreur est survenue lors de l'enregistrement.";
+
+        this.errorMessage.set(backendMessage);
       },
     });
+  }
+
+  private isDateTimeInPast(date: string, heure: string): boolean {
+    const selectedDateTime = new Date(`${date}T${this.normalizeTime(heure)}`);
+    const now = new Date();
+
+    return selectedDateTime <= now;
+  }
+
+  private isEndTimeAfterStartTime(heureDebut: string, heureFin: string): boolean {
+    return this.normalizeTime(heureFin) > this.normalizeTime(heureDebut);
+  }
+
+  private findSalleConflict(payload: EventInput): AppEvent | null {
+    const newStart = this.toDate(payload.date_event, payload.heure);
+    const newEnd = this.toDate(payload.date_event, payload.heure_fin);
+
+    return this.events().find((event) => {
+      const sameSalle = Number(event.salle_id) === Number(payload.salle_id);
+      const sameDate = event.date_event === payload.date_event;
+      const isSameEditedEvent = this.isEditMode && this.eventId === event.id;
+
+      if (!sameSalle || !sameDate || isSameEditedEvent) {
+        return false;
+      }
+
+      const existingStart = this.toDate(event.date_event, event.heure);
+      const existingEnd = this.toDate(event.date_event, event.heure_fin);
+
+      return newStart < existingEnd && newEnd > existingStart;
+    }) ?? null;
+  }
+
+  private toDate(date: string, heure: string): Date {
+    return new Date(`${date}T${this.normalizeTime(heure)}`);
+  }
+
+  private normalizeTime(time: string): string {
+    return time.slice(0, 5);
+  }
+
+  private getTodayDate(): string {
+    return new Date().toISOString().slice(0, 10);
   }
 }

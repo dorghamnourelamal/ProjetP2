@@ -25,7 +25,7 @@
     </header>
 
     <p class="event-card__meta">
-      📅 Date : {{ event.date_event | date: 'yyyy-MM-dd' }} {{ event.heure }}
+      📅 Date : {{ event.date_event | date: 'yyyy-MM-dd' }} {{ event.heure }} - {{ event.heure_fin }}
     </p>
 
     <p class="event-card__meta" *ngIf="event.salle">

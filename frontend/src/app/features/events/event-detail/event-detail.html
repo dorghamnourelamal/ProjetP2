@@ -14,18 +14,21 @@
           <div class="event-detail__placeholder"></div>
         }
 
-        @if (event.places_disponibles <= 0) {
-          <span class="badge badge--full event-detail__media-badge">SOLD OUT</span>
-        } @else {
-          <span class="badge badge--popular event-detail__media-badge">⭐ Populaire</span>
-        }
+        <span
+          class="badge event-detail__media-badge"
+          [class.badge--full]="isComplet(event)"
+          [class.badge--popular]="isPopular(event)"
+          [class.badge--available]="!isComplet(event) && !isPopular(event)"
+        >
+          {{ getStatusLabel(event) }}
+        </span>
       </div>
 
       <header class="event-detail__header">
         <h1>{{ event.titre }}</h1>
 
-        <span class="badge" [class.badge--full]="event.places_disponibles <= 0">
-          {{ event.places_disponibles <= 0 ? 'Complet' : event.places_disponibles + ' places disponibles' }}
+        <span class="badge" [class.badge--full]="isComplet(event)">
+          {{ isComplet(event) ? 'Complet' : event.places_disponibles + ' places disponibles' }}
         </span>
       </header>
 
@@ -34,7 +37,7 @@
         <dd>{{ event.date_event | date: 'EEEE d MMMM y' }}</dd>
 
         <dt>Heure</dt>
-        <dd>{{ event.heure }}</dd>
+        <dd>{{ event.heure }} - {{ event.heure_fin }}</dd>
 
         <dt>Salle</dt>
         <dd>
@@ -56,7 +59,7 @@
         <button
           type="button"
           class="btn btn--primary"
-          [disabled]="event.places_disponibles <= 0"
+          [disabled]="isComplet(event)"
           (click)="reserve()"
         >
           Réserver des places

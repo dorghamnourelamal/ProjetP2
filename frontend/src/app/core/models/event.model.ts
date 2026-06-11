@@ -7,6 +7,7 @@ export interface Event {
   description?: string | null;
   date_event: string;
   heure: string;
+  heure_fin: string;
   places_disponibles: number;
   prix: number;
   salle_id: number;
@@ -22,6 +23,7 @@ export interface EventInput {
   description?: string | null;
   date_event: string;
   heure: string;
+  heure_fin: string;
   places_disponibles: number;
   prix: number;
   salle_id: number;
