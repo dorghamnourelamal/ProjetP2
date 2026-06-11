@@ -16,6 +16,7 @@ import { ReservationForm } from './features/reservations/reservation-form/reserv
 
 import { TicketList } from './features/tickets/ticket-list/ticket-list';
 import { TicketForm } from './features/tickets/ticket-form/ticket-form';
+import { TicketVerify } from './features/tickets/ticket-verify/ticket-verify';
 
 import { Dashboard } from './features/dashboard/dashboard/dashboard';
 import { Login } from './features/auth/login/login';
@@ -26,38 +27,32 @@ import { NotFound } from './shared/components/not-found/not-found';
 export const routes: Routes = [
   { path: '', component: Home, pathMatch: 'full' },
 
-  // Authentification
   { path: 'login', component: Login },
   { path: 'register', component: Register },
 
-  // Événements
   { path: 'events', component: EventList },
   { path: 'events/add', component: EventForm, canActivate: [roleGuard(['admin'])] },
   { path: 'events/:id', component: EventDetail },
   { path: 'events/:id/edit', component: EventForm, canActivate: [roleGuard(['admin'])] },
 
-  // Réserver un événement : accessible à tout utilisateur connecté
   { path: 'events/:id/reserve', component: ReservationForm, canActivate: [authGuard] },
 
-  // Salles : admin uniquement
   { path: 'salles', component: SalleList, canActivate: [roleGuard(['admin'])] },
   { path: 'salles/add', component: SalleForm, canActivate: [roleGuard(['admin'])] },
   { path: 'salles/:id/edit', component: SalleForm, canActivate: [roleGuard(['admin'])] },
 
-  // Réservations :
-  // - user connecté : voit ses propres réservations
-  // - admin : voit toutes les réservations
   { path: 'reservations', component: ReservationList, canActivate: [authGuard] },
 
-  // Billets : admin uniquement
+  // Page ouverte par le scan du QR code
+  { path: 'tickets/verify/:code', component: TicketVerify },
+
+  // Les billets sont créés automatiquement après réservation.
+  // L’admin peut seulement les consulter, les modifier ou les supprimer.
   { path: 'tickets', component: TicketList, canActivate: [roleGuard(['admin'])] },
-  { path: 'tickets/add', component: TicketForm, canActivate: [roleGuard(['admin'])] },
   { path: 'tickets/:id/edit', component: TicketForm, canActivate: [roleGuard(['admin'])] },
 
-  // Dashboard : admin uniquement
   { path: 'dashboard', component: Dashboard, canActivate: [roleGuard(['admin'])] },
 
-  // Pages d'erreur
   { path: 'forbidden', component: Forbidden },
   { path: '**', component: NotFound },
 ];

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Ticket, TicketInput } from '../models/ticket.model';
+import { Ticket, TicketInput, TicketVerification } from '../models/ticket.model';
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
@@ -28,5 +28,13 @@ export class TicketService {
 
   delete(id: number): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+  }
+
+  verifyByCode(code: string): Observable<TicketVerification> {
+    return this.http.get<TicketVerification>(`${this.apiUrl}/verify/${code}`);
+  }
+
+  useByCode(code: string): Observable<TicketVerification> {
+    return this.http.patch<TicketVerification>(`${this.apiUrl}/verify/${code}/use`, {});
   }
 }

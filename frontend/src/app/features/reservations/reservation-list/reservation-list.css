@@ -4,10 +4,12 @@
 
 .toolbar__search {
   width: 100%;
-  max-width: 24rem;
+  max-width: 28rem;
   padding: 0.5rem 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
+  background: #ffffff;
+  color: #111827;
 }
 
 .data-table {
@@ -22,27 +24,28 @@
 .data-table th,
 .data-table td {
   color: #111827;
-  padding: 0.8rem 1rem;
+  background: #ffffff;
+  padding: 0.75rem;
+  vertical-align: middle;
+}
+
+.data-table th {
+  font-weight: 800;
+  color: #1f2937;
   border-bottom: 1px solid #e5e7eb;
 }
 
-.data-table thead th {
+.data-table td {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.data-table tr:hover td {
   background: #f9fafb;
-  color: #111827;
-  font-weight: 600;
-}
-
-.data-table tbody tr {
-  background: #ffffff;
-}
-
-.data-table tbody tr:hover {
-  background: #f3f4f6;
 }
 
 .data-table a {
-  color: #0ea5e9;
-  font-weight: 600;
+  color: #0284c7;
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -50,7 +53,77 @@
   text-decoration: underline;
 }
 
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
 .btn--small {
   padding: 0.3rem 0.6rem;
   font-size: 0.85rem;
+}
+
+.reservation-ticket-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.reservation-ticket {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  color: #111827;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.reservation-ticket:hover {
+  text-decoration: none;
+}
+
+.reservation-ticket-qr {
+  width: 64px;
+  height: 64px;
+  padding: 0.25rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  object-fit: contain;
+}
+
+.reservation-ticket-qr:hover {
+  transform: scale(1.05);
+}
+
+.reservation-ticket__code {
+  color: #111827;
+  background: #f3f4f6;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+}
+
+.reservation-ticket__status {
+  color: #0369a1;
+  background: #e0f2fe;
+  padding: 0.15rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+}
+
+.reservation-ticket__status--used {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.reservation-ticket__status--cancelled {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.empty-ticket {
+  color: #6b7280;
+  font-weight: 600;
 }

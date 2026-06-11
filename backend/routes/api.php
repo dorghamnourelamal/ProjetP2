@@ -14,7 +14,6 @@ Route::get('/test', function () {
     return response()->json(['message' => 'API Laravel OK']);
 });
 
-
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
@@ -23,38 +22,41 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
 });
 
-
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/events/{event}', [EventController::class, 'show']);
+
 Route::get('/salles', [SalleController::class, 'index']);
 Route::get('/salles/{salle}', [SalleController::class, 'show']);
-Route::get('/tickets', [TicketController::class, 'index']);
-Route::get('/tickets/{ticket}', [TicketController::class, 'show']);
 
-// IMPORTANT : route publique pour afficher les images dans Angular
+// QR code et vérification publique du billet
+Route::get('/tickets/qrcode/{code}', [TicketController::class, 'qrcodeByCode']);
+Route::get('/tickets/verify/{code}', [TicketController::class, 'verifyByCode']);
+
+// Images publiques
 Route::get('/files', [FileController::class, 'index']);
 Route::get('/files/{id}/content', [FileController::class, 'content'])->name('files.content');
-// Formulaire de contact (page d'accueil) : envoie un email au propriétaire du site
+
+// Contact public
 Route::post('/contact', [ContactController::class, 'send']);
 
-
 Route::middleware('auth:sanctum')->group(function () {
-
-    // Réservations : un utilisateur connecté peut réserver / consulter / annuler
     Route::apiResource('reservations', ReservationController::class)->except(['update']);
 
-    // Fichiers : upload/suppression protégés
     Route::post('/files', [FileController::class, 'store']);
     Route::delete('/files/{id}', [FileController::class, 'destroy']);
 
-    // Statistiques & audit
     Route::get('/stats/overview', [StatController::class, 'overview']);
     Route::get('/stats/activity', [StatController::class, 'activity']);
 
-    // Gestion réservée aux administrateurs
     Route::middleware('role:admin')->group(function () {
         Route::apiResource('events', EventController::class)->except(['index', 'show']);
         Route::apiResource('salles', SalleController::class)->except(['index', 'show']);
-        Route::apiResource('tickets', TicketController::class)->except(['index', 'show']);
+
+        // Validation d’entrée par QR code : admin uniquement
+        Route::patch('/tickets/verify/{code}/use', [TicketController::class, 'useByCode']);
+
+        // L’admin peut voir, modifier et supprimer les billets.
+        // La création manuelle est désactivée, car les billets sont créés automatiquement après réservation.
+        Route::apiResource('tickets', TicketController::class)->except(['store']);
     });
 });

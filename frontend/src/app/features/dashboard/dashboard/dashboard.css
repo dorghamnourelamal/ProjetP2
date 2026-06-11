@@ -6,6 +6,7 @@
 ::ng-deep .page > h1 {
   font-size: 1.6rem;
   font-weight: 800;
+  color: #ffffff;
 }
 
 .stat-cards {
@@ -18,7 +19,8 @@
 .stat-card {
   position: relative;
   overflow: hidden;
-  background: #fff;
+  background: #ffffff;
+  color: #111827;
   border: 1px solid #e5e7eb;
   border-radius: 1rem;
   padding: 1.4rem 1.25rem;
@@ -62,7 +64,53 @@
 .dashboard-section h2 {
   margin-bottom: 0.85rem;
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.data-table {
+  width: 100%;
+  background: #ffffff;
+  color: #111827;
+  border-collapse: collapse;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.data-table th,
+.data-table td {
+  color: #111827;
+  background: #ffffff;
+  padding: 0.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.data-table th {
+  color: #1f2937;
+  font-weight: 800;
+}
+
+.data-table tr:hover td {
+  background: #f9fafb;
+}
+
+.data-table a {
+  color: #0284c7;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.data-table a:hover {
+  text-decoration: underline;
+}
+
+.empty-state {
+  background: #ffffff;
+  color: #6b7280;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
 }
 
 .activity-feed {
@@ -75,8 +123,9 @@
 }
 
 .activity-feed li {
-  background: #f9fafb;
-  border: 1px solid #f1f5f9;
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
   border-radius: 0.65rem;
   padding: 0.65rem 0.95rem;
   display: flex;
@@ -87,22 +136,23 @@
 }
 
 .activity-feed li:hover {
-  background: var(--color-primary-soft, #ecfeff);
+  background: #f9fafb;
   border-color: rgba(8, 145, 178, 0.25);
 }
 
 .activity-feed__action {
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   font-size: 0.75rem;
-  color: var(--color-primary, #0891b2);
-  background: var(--color-primary-soft, #ecfeff);
+  color: #0891b2;
+  background: #ecfeff;
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
 }
 
 .activity-feed time {
   margin-left: auto;
-  color: #9ca3af;
+  color: #6b7280;
   font-size: 0.8rem;
+  font-weight: 600;
 }

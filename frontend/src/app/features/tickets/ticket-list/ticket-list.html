@@ -1,14 +1,13 @@
 <div class="page">
   <div class="toolbar">
     <h1>Billets</h1>
-    <button type="button" class="btn btn--primary" (click)="add()">+ Émettre un billet</button>
   </div>
 
   <div class="toolbar">
     <input
       type="search"
       class="toolbar__search"
-      placeholder="Rechercher (code, type, client)…"
+      placeholder="Rechercher (code, type, client, événement)…"
       [ngModel]="searchTerm()"
       (ngModelChange)="searchTerm.set($event)"
     />
@@ -23,36 +22,65 @@
   } @else {
     <table class="data-table">
       <thead>
-        <tr>
-          <th class="sortable" (click)="changeSort('code')">
-            Code {{ sortKey() === 'code' ? (sortAsc() ? '▲' : '▼') : '' }}
-          </th>
-          <th class="sortable" (click)="changeSort('type')">
-            Type {{ sortKey() === 'type' ? (sortAsc() ? '▲' : '▼') : '' }}
-          </th>
-          <th class="sortable" (click)="changeSort('prix')">
-            Prix {{ sortKey() === 'prix' ? (sortAsc() ? '▲' : '▼') : '' }}
-          </th>
-          <th class="sortable" (click)="changeSort('statut')">
-            Statut {{ sortKey() === 'statut' ? (sortAsc() ? '▲' : '▼') : '' }}
-          </th>
-          <th>Client</th>
-          <th></th>
-        </tr>
+      <tr>
+        <th class="sortable" (click)="changeSort('code')">
+          Code {{ sortKey() === 'code' ? (sortAsc() ? '▲' : '▼') : '' }}
+        </th>
+        <th>QR Code</th>
+        <th class="sortable" (click)="changeSort('type')">
+          Type {{ sortKey() === 'type' ? (sortAsc() ? '▲' : '▼') : '' }}
+        </th>
+        <th class="sortable" (click)="changeSort('prix')">
+          Prix {{ sortKey() === 'prix' ? (sortAsc() ? '▲' : '▼') : '' }}
+        </th>
+        <th class="sortable" (click)="changeSort('statut')">
+          Statut {{ sortKey() === 'statut' ? (sortAsc() ? '▲' : '▼') : '' }}
+        </th>
+        <th>Client</th>
+        <th>Événement</th>
+        <th>Réservation</th>
+        <th></th>
+      </tr>
       </thead>
+
       <tbody>
         @for (ticket of filteredTickets(); track ticket.id) {
           <tr>
-            <td><code>{{ ticket.code }}</code></td>
+            <td>
+              <code>{{ ticket.code }}</code>
+            </td>
+
+            <td>
+              <a [routerLink]="['/tickets/verify', ticket.code]">
+                <img
+                  [src]="ticket.qr_code_url"
+                  [alt]="'QR Code du billet ' + ticket.code"
+                  class="ticket-qr"
+                />
+              </a>
+            </td>
+
             <td>{{ ticket.type }}</td>
             <td>{{ ticket.prix }} €</td>
+
             <td>
-              <span class="badge" [class.badge--full]="ticket.statut !== 'valide'">{{ ticket.statut }}</span>
+              <span class="badge" [class.badge--full]="ticket.statut !== 'valide'">
+                {{ ticket.statut }}
+              </span>
             </td>
+
             <td>{{ ticket.reservation?.nom_client ?? '—' }}</td>
+            <td>{{ ticket.reservation?.event?.titre ?? '—' }}</td>
+            <td>#{{ ticket.reservation_id }}</td>
+
             <td class="actions">
-              <button type="button" class="btn btn--secondary btn--small" (click)="edit(ticket)">Éditer</button>
-              <button type="button" class="btn btn--danger btn--small" (click)="remove(ticket)">Supprimer</button>
+              <a class="btn btn--secondary btn--small" [routerLink]="['/tickets', ticket.id, 'edit']">
+                Éditer
+              </a>
+
+              <button type="button" class="btn btn--danger btn--small" (click)="remove(ticket)">
+                Supprimer
+              </button>
             </td>
           </tr>
         }

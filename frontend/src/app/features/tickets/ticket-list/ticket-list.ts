@@ -1,21 +1,16 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket';
-import { AuthService } from '../../../core/services/auth';
 import { Ticket } from '../../../core/models/ticket.model';
 
 type SortKey = 'code' | 'type' | 'prix' | 'statut';
 
-/**
- * Liste des billets émis (vue admin) : recherche/tri côté client par signaux + computed,
- * gestion du statut (valide / utilisé / annulé) et accès au formulaire d'émission.
- */
 @Component({
   selector: 'app-ticket-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './ticket-list.html',
   styleUrl: './ticket-list.css',
 })
@@ -37,28 +32,32 @@ export class TicketList implements OnInit {
       if (!term) {
         return true;
       }
+
       return (
         ticket.code.toLowerCase().includes(term) ||
         ticket.type.toLowerCase().includes(term) ||
-        (ticket.reservation?.nom_client ?? '').toLowerCase().includes(term)
+        ticket.statut.toLowerCase().includes(term) ||
+        (ticket.reservation?.nom_client ?? '').toLowerCase().includes(term) ||
+        (ticket.reservation?.event?.titre ?? '').toLowerCase().includes(term)
       );
     });
 
     result = [...result].sort((a, b) => {
       const va = a[key];
       const vb = b[key];
-      const comparison = typeof va === 'string' ? va.localeCompare(vb as string) : (va as number) - (vb as number);
+
+      const comparison =
+        typeof va === 'string'
+          ? va.localeCompare(vb as string)
+          : (va as number) - (vb as number);
+
       return asc ? comparison : -comparison;
     });
 
     return result;
   });
 
-  constructor(
-    private ticketService: TicketService,
-    public auth: AuthService,
-    private router: Router,
-  ) {}
+  constructor(private ticketService: TicketService) {}
 
   ngOnInit(): void {
     this.load();
@@ -87,14 +86,6 @@ export class TicketList implements OnInit {
       this.sortKey.set(key);
       this.sortAsc.set(true);
     }
-  }
-
-  add(): void {
-    this.router.navigate(['/tickets/add']);
-  }
-
-  edit(ticket: Ticket): void {
-    this.router.navigate(['/tickets', ticket.id, 'edit']);
   }
 
   remove(ticket: Ticket): void {

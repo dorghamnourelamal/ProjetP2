@@ -47,6 +47,35 @@ export class EventDetail implements OnInit {
       });
   }
 
+  isComplet(event: Event): boolean {
+    return event.places_disponibles <= 0;
+  }
+
+  isPopular(event: Event): boolean {
+    const today = new Date().toISOString().slice(0, 10);
+    const capacite = event.salle?.capacite;
+
+    if (!capacite || event.date_event < today || this.isComplet(event)) {
+      return false;
+    }
+
+    const tauxRemplissage = 1 - event.places_disponibles / capacite;
+
+    return tauxRemplissage >= 0.5;
+  }
+
+  getStatusLabel(event: Event): string {
+    if (this.isComplet(event)) {
+      return 'Complet';
+    }
+
+    if (this.isPopular(event)) {
+      return 'Populaire';
+    }
+
+    return 'Disponible';
+  }
+
   reserve(): void {
     const event = this.event();
 

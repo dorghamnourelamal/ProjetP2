@@ -1,0 +1,88 @@
+<div class="verify-page">
+  <a routerLink="/events" class="back-link">&larr; Retour aux événements</a>
+
+  <section class="verify-card">
+    <h1>Vérification du billet</h1>
+
+    @if (loading()) {
+      <p>Vérification en cours…</p>
+    } @else {
+      @if (errorMessage()) {
+        <div class="alert alert--error">{{ errorMessage() }}</div>
+      }
+
+      @if (successMessage()) {
+        <div class="alert alert--success">{{ successMessage() }}</div>
+      }
+
+      @if (verification(); as ticket) {
+        <div class="ticket-status" [ngClass]="getStatusClass()">
+          {{ ticket.message }}
+        </div>
+
+        <dl class="ticket-info">
+          <dt>Code</dt>
+          <dd>{{ ticket.code ?? code }}</dd>
+
+          <dt>Statut</dt>
+          <dd>{{ ticket.statut ?? '—' }}</dd>
+
+          <dt>Type</dt>
+          <dd>{{ ticket.type ?? '—' }}</dd>
+
+          <dt>Prix</dt>
+          <dd>{{ ticket.prix ?? 0 }} €</dd>
+
+          <dt>Événement</dt>
+          <dd>{{ ticket.event?.titre ?? '—' }}</dd>
+
+          <dt>Date</dt>
+          <dd>{{ ticket.event?.date_event ?? '—' }}</dd>
+
+          <dt>Horaire</dt>
+          <dd>
+            {{ ticket.event?.heure ?? '—' }}
+            @if (ticket.event?.heure_fin) {
+              - {{ ticket.event?.heure_fin }}
+            }
+          </dd>
+
+          <dt>Salle</dt>
+          <dd>{{ ticket.event?.salle ?? '—' }}</dd>
+
+          <dt>Nom du client</dt>
+          <dd>{{ ticket.reservation?.nom_client ?? '—' }}</dd>
+
+          @if (auth.isAdmin()) {
+            <dt>Email</dt>
+            <dd>{{ ticket.reservation?.email_client ?? '—' }}</dd>
+
+            <dt>Réservation</dt>
+            <dd>#{{ ticket.reservation?.id ?? '—' }}</dd>
+          }
+        </dl>
+
+        @if (auth.isAdmin() && ticket.statut === 'valide') {
+          <button
+            type="button"
+            class="btn btn--primary btn--block"
+            [disabled]="validating()"
+            (click)="validateEntry()"
+          >
+            {{ validating() ? "Validation..." : "Valider l'entrée" }}
+          </button>
+        }
+
+        @if (auth.isAdmin() && ticket.statut === 'utilisé') {
+          <p class="info-text">Ce billet a déjà été utilisé.</p>
+        }
+
+        @if (!auth.isAdmin()) {
+          <p class="info-text">
+            Présentez ce billet au contrôle d’entrée. Seul l’administrateur peut valider l’accès.
+          </p>
+        }
+      }
+    }
+  </section>
+</div>

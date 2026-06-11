@@ -5,7 +5,7 @@
     <input
       type="search"
       class="toolbar__search"
-      placeholder="Rechercher (nom, email, événement)…"
+      [placeholder]="auth.isAdmin() ? 'Rechercher (nom, email, événement)…' : 'Rechercher un événement…'"
       [ngModel]="searchTerm()"
       (ngModelChange)="searchTerm.set($event)"
     />
@@ -20,37 +20,94 @@
   } @else {
     <table class="data-table">
       <thead>
-        <tr>
+      <tr>
+        @if (auth.isAdmin()) {
           <th class="sortable" (click)="changeSort('nom_client')">
             Client {{ sortKey() === 'nom_client' ? (sortAsc() ? '▲' : '▼') : '' }}
           </th>
           <th>Email</th>
-          <th>Événement</th>
-          <th class="sortable" (click)="changeSort('nombre_places')">
-            Places {{ sortKey() === 'nombre_places' ? (sortAsc() ? '▲' : '▼') : '' }}
-          </th>
-          <th class="sortable" (click)="changeSort('created_at')">
-            Réservée le {{ sortKey() === 'created_at' ? (sortAsc() ? '▲' : '▼') : '' }}
-          </th>
-          <th></th>
-        </tr>
+        }
+
+        <th>Événement</th>
+
+        <th class="sortable" (click)="changeSort('nombre_places')">
+          Places {{ sortKey() === 'nombre_places' ? (sortAsc() ? '▲' : '▼') : '' }}
+        </th>
+
+        @if (!auth.isAdmin()) {
+          <th>Mes billets / QR codes</th>
+        }
+
+        <th class="sortable" (click)="changeSort('created_at')">
+          Réservée le {{ sortKey() === 'created_at' ? (sortAsc() ? '▲' : '▼') : '' }}
+        </th>
+
+        <th></th>
+      </tr>
       </thead>
+
       <tbody>
         @for (reservation of filteredReservations(); track reservation.id) {
           <tr>
-            <td>{{ reservation.nom_client }}</td>
-            <td>{{ reservation.email_client }}</td>
+            @if (auth.isAdmin()) {
+              <td>{{ reservation.nom_client }}</td>
+              <td>{{ reservation.email_client }}</td>
+            }
+
             <td>
               @if (reservation.event) {
-                <a [routerLink]="['/events', reservation.event.id]">{{ reservation.event.titre }}</a>
+                <a [routerLink]="['/events', reservation.event.id]">
+                  {{ reservation.event.titre }}
+                </a>
               } @else {
                 —
               }
             </td>
+
             <td>{{ reservation.nombre_places }}</td>
+
+            @if (!auth.isAdmin()) {
+              <td>
+                @if (reservation.tickets && reservation.tickets.length > 0) {
+                  <div class="reservation-ticket-list">
+                    @for (ticket of reservation.tickets; track ticket.id) {
+                      <a
+                        class="reservation-ticket"
+                        [routerLink]="['/tickets/verify', ticket.code]"
+                        [title]="'Voir le billet ' + ticket.code"
+                      >
+                        <img
+                          [src]="ticket.qr_code_url"
+                          [alt]="'QR Code du billet ' + ticket.code"
+                          class="reservation-ticket-qr"
+                        />
+
+                        <span class="reservation-ticket__code">{{ ticket.code }}</span>
+
+                        <span
+                          class="reservation-ticket__status"
+                          [class.reservation-ticket__status--used]="ticket.statut === 'utilisé'"
+                          [class.reservation-ticket__status--cancelled]="ticket.statut === 'annulé'"
+                        >
+                          {{ ticket.statut }}
+                        </span>
+                      </a>
+                    }
+                  </div>
+                } @else {
+                  <span class="empty-ticket">Aucun billet</span>
+                }
+              </td>
+            }
+
             <td>{{ reservation.created_at | date: 'dd/MM/y HH:mm' }}</td>
+
             <td>
-              <button type="button" class="btn btn--danger btn--small" (click)="deleteReservation(reservation)">
+              <button
+                type="button"
+                class="btn btn--danger btn--small"
+                (click)="deleteReservation(reservation)"
+              >
                 Supprimer
               </button>
             </td>

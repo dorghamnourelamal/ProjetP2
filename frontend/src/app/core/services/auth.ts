@@ -8,9 +8,9 @@ const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
 
 /**
- * Service central d'authentification : consomme l'API Sanctum (token Bearer),
- * conserve la session courante dans des signaux et la persiste dans sessionStorage
- * pour survivre à un rafraîchissement de page.
+ * Service central d'authentification : consomme l'API Sanctum avec token Bearer,
+ * conserve la session courante dans des signaux et la persiste dans localStorage
+ * pour rester connecté après rafraîchissement ou ouverture d'un nouvel onglet.
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -19,33 +19,18 @@ export class AuthService {
   private readonly currentUserSignal = signal<User | null>(this.restoreUser());
   private readonly tokenSignal = signal<string | null>(this.restoreToken());
 
-  /** Utilisateur courant (ou null si non connecté), exposé en lecture seule. */
   readonly currentUser = this.currentUserSignal.asReadonly();
 
-  /** Vrai si un utilisateur est authentifié. */
   readonly isAuthenticated = computed(() => this.tokenSignal() !== null);
 
-  /** Vrai si l'utilisateur courant possède le rôle "admin". */
   readonly isAdmin = computed(() => this.currentUserSignal()?.role === 'admin');
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Inscription d'un nouvel utilisateur.
-   *
-   * Important :
-   * on ne connecte pas automatiquement l'utilisateur après inscription.
-   * Le backend peut renvoyer un token, mais ici on ne le stocke pas.
-   * L'utilisateur sera redirigé vers /login et devra se connecter lui-même.
-   */
   register(payload: RegisterPayload): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, payload);
   }
 
-  /**
-   * Connexion de l'utilisateur.
-   * Ici seulement, on stocke le token et les informations utilisateur.
-   */
   login(payload: LoginPayload): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/login`, payload)
@@ -58,7 +43,6 @@ export class AuthService {
       .pipe(tap(() => this.clearSession()));
   }
 
-  /** Récupère le profil de l'utilisateur connecté depuis l'API. */
   fetchCurrentUser(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/me`).pipe(
       tap((user) => {
@@ -72,31 +56,30 @@ export class AuthService {
     return this.tokenSignal();
   }
 
-  /** Force la déconnexion locale, par exemple après une réponse 401 de l'API. */
   clearSession(): void {
     this.currentUserSignal.set(null);
     this.tokenSignal.set(null);
-    sessionStorage.removeItem(TOKEN_KEY);
-    sessionStorage.removeItem(USER_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
   }
 
   private handleAuthSuccess(res: AuthResponse): void {
     this.currentUserSignal.set(res.user);
     this.tokenSignal.set(res.token);
-    sessionStorage.setItem(TOKEN_KEY, res.token);
+    localStorage.setItem(TOKEN_KEY, res.token);
     this.persistUser(res.user);
   }
 
   private persistUser(user: User): void {
-    sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
 
   private restoreToken(): string | null {
-    return sessionStorage.getItem(TOKEN_KEY);
+    return localStorage.getItem(TOKEN_KEY);
   }
 
   private restoreUser(): User | null {
-    const raw = sessionStorage.getItem(USER_KEY);
+    const raw = localStorage.getItem(USER_KEY);
     return raw ? (JSON.parse(raw) as User) : null;
   }
 }
