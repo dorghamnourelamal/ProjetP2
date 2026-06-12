@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventCancellation;
 use App\Models\Event;
 use App\Models\Mongo\FileMeta;
 use App\Services\ActivityLogger;
 use App\Services\StatRecorder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
@@ -120,19 +123,33 @@ class EventController extends Controller
         $titre = $event->titre;
         $eventId = $event->id;
 
-        $event->delete();
+        // Charger les réservations et la salle
+        $event->load('reservations', 'salle');
+
+        // Marquer l'événement comme annulé (pas de suppression physique)
+        $event->update(['statut' => 'annulé']);
+
+        // Envoyer un email d'annulation à chaque participant
+        foreach ($event->reservations as $reservation) {
+            try {
+                Mail::to($reservation->email_client)
+                    ->send(new EventCancellation($event, $reservation));
+            } catch (\Throwable $e) {
+                Log::error("Échec envoi email annulation événement #{$eventId} à {$reservation->email_client} : {$e->getMessage()}");
+            }
+        }
 
         $this->activityLogger->log(
             $request->user(),
             'delete',
-            "Suppression de l'événement '{$titre}'",
+            "Annulation de l'événement '{$titre}'",
             $request,
             'Event',
             $eventId
         );
 
         return response()->json([
-            'message' => 'Événement supprimé avec succès'
+            'message' => 'Événement annulé avec succès'
         ]);
     }
 

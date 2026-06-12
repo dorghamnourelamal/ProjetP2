@@ -6,8 +6,10 @@
       <div class="event-card__placeholder"></div>
     }
 
-    @if (isComplet) {
-      <span class="badge badge--popular">Sold out</span>
+    @if (event.statut === 'annulé') {
+      <span class="badge badge--full">❌ Annulé</span>
+    } @else if (isComplet) {
+      <span class="badge badge--full">Sold out</span>
     } @else if (isPopular) {
       <span class="badge badge--popular">Populaire</span>
     }
@@ -41,14 +43,16 @@
     </p>
 
     <footer>
-      <button
-        type="button"
-        class="btn btn--primary"
-        [disabled]="isComplet"
-        (click)="reserve.emit(event)"
-      >
-        Voir plus de détails
-      </button>
+      @if (canReserve) {
+        <button
+          type="button"
+          class="btn btn--primary"
+          [disabled]="isComplet"
+          (click)="reserve.emit(event)"
+        >
+          Réserver
+        </button>
+      }
 
       @if (canManage) {
         <button type="button" class="btn btn--secondary" (click)="edit.emit(event)">

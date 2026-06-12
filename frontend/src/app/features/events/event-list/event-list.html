@@ -44,6 +44,7 @@
         <app-event-card
           [event]="event"
           [canManage]="auth.isAdmin()"
+          [canReserve]="!auth.isAdmin()"
           (reserve)="onReserve($event)"
           (edit)="onEdit($event)"
           (remove)="onDelete($event)"

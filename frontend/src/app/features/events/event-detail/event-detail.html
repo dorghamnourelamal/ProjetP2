@@ -56,14 +56,16 @@
       }
 
       <div class="event-detail__actions">
-        <button
-          type="button"
-          class="btn btn--primary"
-          [disabled]="isComplet(event)"
-          (click)="reserve()"
-        >
-          Réserver des places
-        </button>
+        @if (!auth.isAdmin()) {
+          <button
+            type="button"
+            class="btn btn--primary"
+            [disabled]="isComplet(event)"
+            (click)="reserve()"
+          >
+            Réserver des places
+          </button>
+        }
 
         @if (auth.isAdmin()) {
           <button type="button" class="btn btn--secondary" (click)="edit()">Éditer</button>

@@ -3,6 +3,10 @@
 namespace App\Mail;
 
 use App\Models\Reservation;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -41,12 +45,33 @@ class ReservationConfirmation extends Mailable
 
     /**
      * Génère le billet PDF à la volée (via DomPDF) et le joint au mail.
+     * Chaque billet contient son QR code encodé en SVG base64.
      *
      * @return array<int, Attachment>
      */
     public function attachments(): array
     {
-        $pdf = Pdf::loadView('tickets.pdf', ['reservation' => $this->reservation]);
+        $this->reservation->load('tickets');
+
+        $qrCodes = [];
+
+        $renderer = new ImageRenderer(
+            new RendererStyle(200),
+            new SvgImageBackEnd()
+        );
+        $writer = new Writer($renderer);
+        $frontendUrl = rtrim(env('FRONTEND_URL', 'http://localhost:4200'), '/');
+
+        foreach ($this->reservation->tickets as $ticket) {
+            $url = "{$frontendUrl}/tickets/verify/{$ticket->code}";
+            $svg = $writer->writeString($url);
+            $qrCodes[$ticket->code] = base64_encode($svg);
+        }
+
+        $pdf = Pdf::loadView('tickets.pdf', [
+            'reservation' => $this->reservation,
+            'qrCodes'     => $qrCodes,
+        ]);
 
         return [
             Attachment::fromData(fn () => $pdf->output(), "billet-reservation-{$this->reservation->id}.pdf")

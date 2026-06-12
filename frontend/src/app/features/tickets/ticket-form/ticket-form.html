@@ -11,35 +11,37 @@
         <div class="alert alert--error">{{ errorMessage() }}</div>
       }
 
-      <div class="field">
-        <label for="reservation_id">Réservation</label>
-        <select id="reservation_id" formControlName="reservation_id">
-          <option [value]="0" disabled>Choisir une réservation…</option>
-          @for (reservation of reservations(); track reservation.id) {
-            <option [value]="reservation.id">
-              #{{ reservation.id }} — {{ reservation.nom_client }} ({{ reservation.event?.titre ?? 'événement supprimé' }})
-            </option>
-          }
-        </select>
-        @if (f.reservation_id.invalid && f.reservation_id.touched) {
-          <small class="field-error">Veuillez choisir une réservation.</small>
-        }
-      </div>
-
-      <div class="field-row">
+      @if (!isEditMode) {
         <div class="field">
-          <label for="type">Type</label>
-          <input id="type" type="text" formControlName="type" />
-        </div>
-
-        <div class="field">
-          <label for="prix">Prix (€)</label>
-          <input id="prix" type="number" min="0" step="0.01" formControlName="prix" />
-          @if (f.prix.invalid && f.prix.touched) {
-            <small class="field-error">Le prix doit être positif.</small>
+          <label for="reservation_id">Réservation</label>
+          <select id="reservation_id" formControlName="reservation_id">
+            <option [value]="0" disabled>Choisir une réservation…</option>
+            @for (reservation of reservations(); track reservation.id) {
+              <option [value]="reservation.id">
+                #{{ reservation.id }} — {{ reservation.nom_client }} ({{ reservation.event?.titre ?? 'événement supprimé' }})
+              </option>
+            }
+          </select>
+          @if (f.reservation_id.invalid && f.reservation_id.touched) {
+            <small class="field-error">Veuillez choisir une réservation.</small>
           }
         </div>
-      </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="type">Type</label>
+            <input id="type" type="text" formControlName="type" />
+          </div>
+
+          <div class="field">
+            <label for="prix">Prix (€)</label>
+            <input id="prix" type="number" min="0" step="0.01" formControlName="prix" />
+            @if (f.prix.invalid && f.prix.touched) {
+              <small class="field-error">Le prix doit être positif.</small>
+            }
+          </div>
+        </div>
+      }
 
       <div class="field">
         <label for="statut">Statut</label>

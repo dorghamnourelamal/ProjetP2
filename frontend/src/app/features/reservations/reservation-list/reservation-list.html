@@ -59,6 +59,9 @@
                 <a [routerLink]="['/events', reservation.event.id]">
                   {{ reservation.event.titre }}
                 </a>
+                @if (reservation.event.statut === 'annulé') {
+                  <span class="badge badge--full" style="margin-left:0.5rem;font-size:0.75rem;">❌ Événement annulé</span>
+                }
               } @else {
                 —
               }
@@ -102,15 +105,19 @@
 
             <td>{{ reservation.created_at | date: 'dd/MM/y HH:mm' }}</td>
 
-            <td>
-              <button
-                type="button"
-                class="btn btn--danger btn--small"
-                (click)="deleteReservation(reservation)"
-              >
-                Supprimer
-              </button>
-            </td>
+            @if (auth.isAdmin()) {
+              <td>
+                <button
+                  type="button"
+                  class="btn btn--danger btn--small"
+                  (click)="deleteReservation(reservation)"
+                >
+                  Supprimer
+                </button>
+              </td>
+            } @else {
+              <td></td>
+            }
           </tr>
         }
       </tbody>

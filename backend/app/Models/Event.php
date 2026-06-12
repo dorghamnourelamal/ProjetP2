@@ -15,6 +15,7 @@ class Event extends Model
         'places_disponibles',
         'prix',
         'salle_id',
+        'statut',
     ];
 
     public function salle()

@@ -83,9 +83,7 @@ class TicketController extends Controller
     public function update(Request $request, Ticket $ticket)
     {
         $data = $request->validate([
-            'type' => 'nullable|string|max:50',
-            'prix' => 'nullable|numeric|min:0',
-            'statut' => 'nullable|in:valide,utilisé,annulé',
+            'statut' => 'required|in:valide,utilisé,annulé',
         ]);
 
         $ticket->update($data);

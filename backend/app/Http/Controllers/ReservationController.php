@@ -132,9 +132,9 @@ class ReservationController extends Controller
     {
         $user = $request->user();
 
-        if (! $user->isAdmin() && $reservation->email_client !== $user->email) {
+        if (! $user->isAdmin()) {
             return response()->json([
-                'message' => 'Accès interdit à cette réservation.'
+                'message' => 'Seul un administrateur peut supprimer une réservation.'
             ], 403);
         }
 

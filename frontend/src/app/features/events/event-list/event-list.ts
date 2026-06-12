@@ -40,6 +40,9 @@ export class EventList implements OnInit {
     const asc = this.sortAsc();
 
     let result = this.eventsSignal().filter((event) => {
+      // Les utilisateurs ne voient pas les événements annulés
+      if (!this.auth.isAdmin() && event.statut === 'annulé') return false;
+
       const matchesSearch =
         !term ||
         event.titre.toLowerCase().includes(term) ||
@@ -102,13 +105,15 @@ export class EventList implements OnInit {
   }
 
   onDelete(event: Event): void {
-    if (!confirm(`Supprimer l'événement "${event.titre}" ?`)) {
+    if (!confirm(`Annuler l’événement "${event.titre}" ? Un email sera envoyé à tous les participants.`)) {
       return;
     }
 
     this.eventService.delete(event.id).subscribe({
-      next: () => this.eventsSignal.update((list) => list.filter((e) => e.id !== event.id)),
-      error: () => alert('Erreur lors de la suppression de l’événement.'),
+      next: () => this.eventsSignal.update((list) =>
+        list.map((e) => e.id === event.id ? { ...e, statut: ‘annulé’ as const } : e)
+      ),
+      error: () => alert("Erreur lors de l’annulation de l’événement."),
     });
   }
 }

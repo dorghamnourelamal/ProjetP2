@@ -39,6 +39,7 @@
   margin: 0;
   text-align: center;
   font-size: 1.5rem;
+  color: var(--color-primary);
 }
 
 .auth-card__subtitle {

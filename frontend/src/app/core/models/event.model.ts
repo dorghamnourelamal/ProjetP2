@@ -13,6 +13,7 @@ export interface Event {
   salle_id: number;
   salle?: Salle;
   reservations?: Reservation[];
+  statut?: 'actif' | 'annulé';
   image_url?: string | null;
   created_at?: string;
   updated_at?: string;

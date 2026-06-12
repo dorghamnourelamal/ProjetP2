@@ -13,6 +13,7 @@ import { Event } from '../../../core/models/event.model';
 export class EventCard {
   @Input({ required: true }) event!: Event;
   @Input() canManage = false;
+  @Input() canReserve = false;
 
   @Output() reserve = new EventEmitter<Event>();
   @Output() edit = new EventEmitter<Event>();
