@@ -11,6 +11,7 @@ use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class TicketController extends Controller
@@ -107,19 +108,44 @@ class TicketController extends Controller
         $code = $ticket->code;
         $ticketId = $ticket->id;
 
-        $ticket->delete();
+        $reservation = $ticket->reservation()
+            ->with('event')
+            ->first();
+
+        $reservationId = $reservation?->id;
+        $event = $reservation?->event;
+
+        DB::transaction(function () use ($ticket, $reservation, $event) {
+            $ticket->delete();
+
+            if ($reservation) {
+                $reservation->nombre_places = max(0, $reservation->nombre_places - 1);
+                $reservation->save();
+
+                if ($event) {
+                    $event->places_disponibles += 1;
+                    $event->save();
+                }
+
+                if ($reservation->nombre_places === 0) {
+                    $reservation->delete();
+                }
+            }
+        });
 
         $this->activityLogger->log(
             $request->user(),
             'delete',
-            "Suppression du billet {$code}",
+            $reservationId
+                ? "Suppression du billet {$code} et retrait d'une place de la réservation #{$reservationId}"
+                : "Suppression du billet {$code}",
             $request,
             'Ticket',
             $ticketId
         );
 
         return response()->json([
-            'message' => 'Billet supprimé avec succès'
+            'message' => 'Billet supprimé avec succès. La réservation et les places disponibles ont été mises à jour.'
         ]);
     }
 

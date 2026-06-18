@@ -1,13 +1,13 @@
 <section class="home-hero">
   <div class="home-hero__content">
-    <h1>Book Your Next Event </h1>
+    <h1>Book Your Next Event</h1>
     <p>Discover and reserve amazing events with Eventify</p>
 
     <div class="home-hero__actions">
       <a routerLink="/events" class="btn btn--primary btn--lg">Explore Events</a>
 
       @if (!auth.isAuthenticated()) {
-        <a routerLink="/register" class="btn btn--ghost btn--lg">Create Account</a>
+      <a routerLink="/register" class="btn btn--ghost btn--lg">Create Account</a>
       }
     </div>
   </div>
@@ -20,37 +20,42 @@
   </div>
 
   @if (loading()) {
-    <p class="empty-state">Chargement des événements…</p>
+  <p class="empty-state">Chargement des événements…</p>
   } @else if (errorMessage()) {
-    <p class="alert alert--error">{{ errorMessage() }}</p>
+  <p class="alert alert--error">{{ errorMessage() }}</p>
   } @else if (featuredEvents().length === 0) {
-    <p class="empty-state">Aucun événement à venir pour le moment.</p>
+  <p class="empty-state">Aucun événement à venir pour le moment.</p>
   } @else {
-    <div class="featured-grid">
-      @for (event of featuredEvents(); track event.id) {
-        <article class="home-event-card">
-          <div class="home-event-card__image">
-            <span class="home-event-card__badge">Event</span>
-          </div>
+  <div class="featured-grid">
+    @for (event of featuredEvents(); track event.id) {
+  <article class="home-event-card">
+    <div class="home-event-card__image">
+      <img
+        [src]="event.image_url || 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=1000&q=80'"
+        [alt]="'Image de l’événement ' + event.titre"
+      />
 
-          <div class="home-event-card__body">
-            <h3>{{ event.titre }}</h3>
-
-            <p> Date : {{ formatDate(event.date_event) }} {{ event.heure }}</p>
-
-            @if (event.salle) {
-              <p> Location : {{ event.salle.nom }}</p>
-            }
-
-            <p class="home-event-card__price">{{ event.prix }} €</p>
-
-            <a class="btn btn--primary btn--block" [routerLink]="['/events', event.id]">
-              Voir plus de détails
-            </a>
-          </div>
-        </article>
-      }
+      <span class="home-event-card__badge">Event</span>
     </div>
+
+    <div class="home-event-card__body">
+      <h3>{{ event.titre }}</h3>
+
+      <p>Date : {{ formatDate(event.date_event) }} {{ event.heure }}</p>
+
+      @if (event.salle) {
+      <p>Location : {{ event.salle.nom }}</p>
+      }
+
+      <p class="home-event-card__price">{{ event.prix }} €</p>
+
+      <a class="btn btn--primary btn--block" [routerLink]="['/events', event.id]">
+        Voir plus de détails
+      </a>
+    </div>
+  </article>
+  }
+  </div>
   }
 </section>
 
@@ -79,68 +84,75 @@
 </section>
 
 @if (showContactForm()) {
-  <div class="contact-modal__backdrop" (click)="closeContactForm()">
-    <div class="contact-modal" (click)="$event.stopPropagation()">
-      <button type="button" class="contact-modal__close" (click)="closeContactForm()" aria-label="Fermer">✕</button>
+<div class="contact-modal__backdrop" (click)="closeContactForm()">
+<div class="contact-modal" (click)="$event.stopPropagation()">
+<button
+type="button"
+class="contact-modal__close"
+(click)="closeContactForm()"
+aria-label="Fermer"
+>
+✕
+</button>
 
-      <h3>Contact Us 📨</h3>
+<h3>Contact Us 📨</h3>
 
-      @if (!auth.isAuthenticated()) {
-        <p class="contact-modal__hint">
-          Connectez-vous pour pré-remplir automatiquement vos informations, ou renseignez-les ci-dessous.
-        </p>
-      }
+@if (!auth.isAuthenticated()) {
+<p class="contact-modal__hint">
+  Connectez-vous pour pré-remplir automatiquement vos informations, ou renseignez-les ci-dessous.
+</p>
+}
 
-      <form (ngSubmit)="submitContact()">
-        @if (contactFeedback()) {
-          <div
-            class="alert"
-            [class.alert--success]="contactFeedback()?.type === 'success'"
-            [class.alert--error]="contactFeedback()?.type === 'error'"
-          >
-            {{ contactFeedback()?.text }}
-          </div>
-        }
+<form (ngSubmit)="submitContact()">
+@if (contactFeedback()) {
+<div
+  class="alert"
+  [class.alert--success]="contactFeedback()?.type === 'success'"
+  [class.alert--error]="contactFeedback()?.type === 'error'"
+>
+  {{ contactFeedback()?.text }}
+</div>
+}
 
-        <div class="field">
-          <input
-            type="text"
-            placeholder="Your Name"
-            [ngModel]="contactName()"
-            (ngModelChange)="contactName.set($event)"
-            name="contactName"
-            required
-          />
-        </div>
+<div class="field">
+<input
+type="text"
+placeholder="Your Name"
+[ngModel]="contactName()"
+(ngModelChange)="contactName.set($event)"
+name="contactName"
+required
+/>
+</div>
 
-        <div class="field">
-          <input
-            type="email"
-            placeholder="Your Email"
-            [ngModel]="contactEmail()"
-            (ngModelChange)="contactEmail.set($event)"
-            name="contactEmail"
-            required
-          />
-        </div>
+<div class="field">
+<input
+type="email"
+placeholder="Your Email"
+[ngModel]="contactEmail()"
+(ngModelChange)="contactEmail.set($event)"
+name="contactEmail"
+required
+/>
+</div>
 
-        <div class="field">
-          <textarea
-            placeholder="Write your message..."
-            rows="4"
-            [ngModel]="contactMessage()"
-            (ngModelChange)="contactMessage.set($event)"
-            name="contactMessage"
-            required
-          ></textarea>
-        </div>
+<div class="field">
+<textarea
+placeholder="Write your message..."
+rows="4"
+[ngModel]="contactMessage()"
+(ngModelChange)="contactMessage.set($event)"
+name="contactMessage"
+required
+></textarea>
+</div>
 
-        <button type="submit" class="btn btn--primary btn--block" [disabled]="contactSending()">
-          {{ contactSending() ? 'Envoi en cours…' : 'Send Message' }}
-        </button>
-      </form>
-    </div>
-  </div>
+<button type="submit" class="btn btn--primary btn--block" [disabled]="contactSending()">
+{{ contactSending() ? 'Envoi en cours…' : 'Send Message' }}
+</button>
+</form>
+</div>
+</div>
 }
 
 <footer class="home-footer">

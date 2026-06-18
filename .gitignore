@@ -32,3 +32,4 @@ yarn-error.log*
 # Uploads
 backend/storage/app/public/uploads/
 backend/public/storage
+powerbi_exports/

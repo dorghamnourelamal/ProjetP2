@@ -111,8 +111,7 @@ export class EventList implements OnInit {
 
     this.eventService.delete(event.id).subscribe({
       next: () => this.eventsSignal.update((list) =>
-        list.map((e) => e.id === event.id ? { ...e, statut: ‘annulé’ as const } : e)
-      ),
+        list.map((e) => e.id === event.id ? { ...e, statut: 'annulé' as const } : e)      ),
       error: () => alert("Erreur lors de l’annulation de l’événement."),
     });
   }

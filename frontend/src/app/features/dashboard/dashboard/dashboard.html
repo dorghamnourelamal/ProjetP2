@@ -1,99 +1,352 @@
-<div class="page">
-  <h1>Tableau de bord</h1>
+<div class="page dashboard-page">
+  <section class="dashboard-hero">
+    <div>
+      <span class="dashboard-kicker">Analytics Eventify</span>
+      <h1>Tableau de bord</h1>
+      <p>
+        Suivi dynamique des événements, réservations, billets, revenus, activités MongoDB
+        et exports Power BI.
+      </p>
+    </div>
+
+    <button type="button" class="btn btn--glass" (click)="loadOverview()">
+      Actualiser
+    </button>
+  </section>
 
   @if (loading()) {
-    <p>Chargement des statistiques…</p>
+    <div class="dashboard-loading">Chargement des statistiques…</div>
   } @else if (errorMessage()) {
     <div class="alert alert--error">{{ errorMessage() }}</div>
   } @else if (overview(); as overview) {
-    <section class="stat-cards">
-      <article class="stat-card">
-        <span class="stat-card__value">{{ overview.totals.events }}</span>
-        <span class="stat-card__label">Événements</span>
-      </article>
-      <article class="stat-card">
-        <span class="stat-card__value">{{ overview.totals.reservations }}</span>
-        <span class="stat-card__label">Réservations</span>
-      </article>
-      <article class="stat-card">
-        <span class="stat-card__value">{{ overview.totals.places_reservees }}</span>
-        <span class="stat-card__label">Places réservées</span>
-      </article>
-    </section>
+    <nav class="dashboard-tabs">
+      <button
+        type="button"
+        [class.dashboard-tabs__item--active]="activeTab() === 'overview'"
+        class="dashboard-tabs__item"
+        (click)="setActiveTab('overview')"
+      >
+        Vue globale
+      </button>
 
-    <section class="dashboard-section">
-      <h2>Top événements par réservations</h2>
-      @if (overview.top_events_by_reservations.length === 0) {
-        <p class="empty-state">Pas encore de données suffisantes.</p>
-      } @else {
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Événement</th>
-              <th>Réservations</th>
-              <th>Places réservées</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (row of overview.top_events_by_reservations; track row.event_id) {
-              <tr>
-                <td>
-                  @if (row.event) {
-                    <a [routerLink]="['/events', row.event.id]">{{ row.event.titre }}</a>
-                  } @else {
-                    Événement #{{ row.event_id }}
-                  }
-                </td>
-                <td>{{ row.total_reservations }}</td>
-                <td>{{ row.total_places }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      }
-    </section>
+      <button
+        type="button"
+        [class.dashboard-tabs__item--active]="activeTab() === 'audit'"
+        class="dashboard-tabs__item"
+        (click)="setActiveTab('audit')"
+      >
+        Audit MongoDB
+      </button>
 
-    <section class="dashboard-section">
-      <h2>Statistiques d'usage (MongoDB) par type de métrique</h2>
-      @if (overview.metrics_by_type.length === 0) {
-        <p class="empty-state">Aucune métrique enregistrée pour le moment.</p>
-      } @else {
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Métrique</th>
-              <th>Occurrences</th>
-              <th>Valeur cumulée</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (metric of overview.metrics_by_type; track metric._id) {
-              <tr>
-                <td>{{ metric._id }}</td>
-                <td>{{ metric.count }}</td>
-                <td>{{ metric.total }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      }
-    </section>
+      <button
+        type="button"
+        [class.dashboard-tabs__item--active]="activeTab() === 'powerbi'"
+        class="dashboard-tabs__item"
+        (click)="setActiveTab('powerbi')"
+      >
+        Exports Power BI
+      </button>
+    </nav>
 
-    <section class="dashboard-section">
-      <h2>Activité récente (journaux MongoDB)</h2>
-      @if (overview.recent_activity.length === 0) {
-        <p class="empty-state">Aucune activité enregistrée pour le moment.</p>
-      } @else {
-        <ul class="activity-feed">
-          @for (entry of overview.recent_activity; track entry._id) {
-            <li>
-              <span class="activity-feed__action">{{ entry.action }}</span>
-              — {{ entry.description }}
-              <time>{{ entry.created_at | date: 'dd/MM/y HH:mm' }}</time>
-            </li>
+    @if (activeTab() === 'overview') {
+      <section class="kpi-grid">
+        <article class="kpi-card">
+          <span class="kpi-card__label">Total événements</span>
+          <strong>{{ overview.totals.events }}</strong>
+          <small>Événements publiés dans la plateforme</small>
+        </article>
+
+        <article class="kpi-card">
+          <span class="kpi-card__label">Total réservations</span>
+          <strong>{{ overview.totals.reservations }}</strong>
+          <small>Réservations enregistrées</small>
+        </article>
+
+        <article class="kpi-card">
+          <span class="kpi-card__label">Total billets</span>
+          <strong>{{ overview.totals.tickets }}</strong>
+          <small>Billets générés automatiquement</small>
+        </article>
+
+        <article class="kpi-card kpi-card--accent">
+          <span class="kpi-card__label">Chiffre d’affaires</span>
+          <strong>{{ getFormattedRevenue() }}</strong>
+          <small>Prix moyen billet : {{ getAverageTicketPrice() }}</small>
+        </article>
+      </section>
+
+      <section class="visual-grid">
+        <article class="analytics-card analytics-card--wide">
+          <header class="analytics-card__header">
+            <div>
+              <h2>Places réservées par événement</h2>
+              <p>Classement des événements selon le volume de places réservées.</p>
+            </div>
+            <span class="chip">MySQL</span>
+          </header>
+
+          @if (overview.top_events_by_reservations.length === 0) {
+            <p class="empty-state">Pas encore de données suffisantes.</p>
+          } @else {
+            <div class="horizontal-chart">
+              @for (row of overview.top_events_by_reservations; track row.event_id) {
+                <div class="horizontal-chart__row">
+                  <a
+                    class="horizontal-chart__label"
+                    [routerLink]="['/events', row.event_id]"
+                    [title]="row.event?.titre ?? 'Événement #' + row.event_id"
+                  >
+                    {{ row.event?.titre ?? 'Événement #' + row.event_id }}
+                  </a>
+
+                  <div class="horizontal-chart__track">
+                    <div
+                      class="horizontal-chart__fill"
+                      [style.width]="getBarWidth(row.total_places, getTopEventMax())"
+                    ></div>
+                  </div>
+
+                  <strong>{{ row.total_places }}</strong>
+                </div>
+              }
+            </div>
           }
-        </ul>
-      }
-    </section>
+        </article>
+
+        <article class="analytics-card">
+          <header class="analytics-card__header">
+            <div>
+              <h2>Billets par statut</h2>
+              <p>Cliquez sur un statut pour le filtrer.</p>
+            </div>
+            <span class="chip">Interactif</span>
+          </header>
+
+          @if (overview.tickets_by_status.length === 0) {
+            <p class="empty-state">Aucun billet enregistré.</p>
+          } @else {
+            <div class="donut-zone">
+              <button
+                type="button"
+                class="donut"
+                [style.background]="getDonutBackground()"
+                (click)="selectedTicketStatus.set(null)"
+                title="Réinitialiser le filtre"
+              >
+                <span class="donut__inner">
+                  <strong>{{ getTicketsTotal() }}</strong>
+                  <small>billets</small>
+                </span>
+              </button>
+
+              <div class="status-list">
+                @for (row of overview.tickets_by_status; track row.statut; let i = $index) {
+                  <button
+                    type="button"
+                    class="status-pill"
+                    [class.status-pill--active]="selectedTicketStatus() === row.statut"
+                    (click)="toggleTicketStatus(row.statut)"
+                  >
+                    <span
+                      class="status-pill__dot"
+                      [style.background]="getStatusColor(i)"
+                    ></span>
+                    <span>{{ row.statut }}</span>
+                    <strong>{{ row.total }} · {{ getTicketStatusPercentage(row.total) }}%</strong>
+                  </button>
+                }
+              </div>
+            </div>
+
+            @if (selectedTicketStatus()) {
+              <p class="filter-hint">
+                Filtre actif : <strong>{{ selectedTicketStatus() }}</strong>
+                — cliquez sur le donut pour réinitialiser.
+              </p>
+            }
+          }
+        </article>
+
+        <article class="analytics-card analytics-card--wide">
+          <header class="analytics-card__header">
+            <div>
+              <h2>Occupation des salles</h2>
+              <p>Comparaison entre les places réservées et la capacité de chaque salle.</p>
+            </div>
+            <span class="chip chip--green">Salles</span>
+          </header>
+
+          @if (overview.places_by_salle.length === 0) {
+            <p class="empty-state">Aucune salle enregistrée.</p>
+          } @else {
+            <div class="horizontal-chart">
+              @for (row of overview.places_by_salle; track row.salle_id) {
+                <div class="horizontal-chart__row">
+                  <span class="horizontal-chart__label" [title]="row.salle_nom">
+                    {{ row.salle_nom }}
+                  </span>
+
+                  <div class="horizontal-chart__track">
+                    <div
+                      class="horizontal-chart__fill horizontal-chart__fill--green"
+                      [style.width]="getBarWidth(row.places_reservees, getSalleMax())"
+                    ></div>
+                  </div>
+
+                  <strong>{{ row.places_reservees }}/{{ row.capacite }}</strong>
+                </div>
+              }
+            </div>
+          }
+        </article>
+
+        <article class="analytics-card">
+          <header class="analytics-card__header">
+            <div>
+              <h2>Métriques MongoDB</h2>
+              <p>Indicateurs d’usage collectés automatiquement.</p>
+            </div>
+            <span class="chip chip--purple">NoSQL</span>
+          </header>
+
+          @if (overview.metrics_by_type.length === 0) {
+            <p class="empty-state">Aucune métrique enregistrée.</p>
+          } @else {
+            <div class="metric-stack">
+              @for (metric of overview.metrics_by_type; track metric._id) {
+                <article class="metric-card">
+                  <span>{{ metric._id || 'metric_unknown' }}</span>
+                  <strong>{{ metric.total }}</strong>
+                  <small>{{ metric.count }} occurrence(s)</small>
+                </article>
+              }
+            </div>
+          }
+        </article>
+      </section>
+    }
+
+    @if (activeTab() === 'audit') {
+      <section class="audit-layout">
+        <article class="analytics-card">
+          <header class="analytics-card__header">
+            <div>
+              <h2>Actions utilisateurs</h2>
+              <p>Filtrez l’activité récente par type d’action.</p>
+            </div>
+            <span class="chip chip--purple">MongoDB</span>
+          </header>
+
+          <div class="action-filter-list">
+            <button
+              type="button"
+              class="action-filter"
+              [class.action-filter--active]="selectedActivityAction() === null"
+              (click)="setActivityActionFilter(null)"
+            >
+              Toutes
+              <strong>{{ overview.recent_activity.length }}</strong>
+            </button>
+
+            @for (action of getActivityActions(); track action) {
+              <button
+                type="button"
+                class="action-filter"
+                [class.action-filter--active]="selectedActivityAction() === action"
+                (click)="setActivityActionFilter(action)"
+              >
+                {{ getActionLabel(action) }}
+                <strong>{{ getActivityCount(action) }}</strong>
+              </button>
+            }
+          </div>
+        </article>
+
+        <article class="analytics-card analytics-card--wide">
+          <header class="analytics-card__header">
+            <div>
+              <h2>Activité récente des utilisateurs</h2>
+              <p>Historique des connexions et opérations sensibles.</p>
+            </div>
+            <span class="chip">Audit</span>
+          </header>
+
+          @if (getFilteredActivity().length === 0) {
+            <p class="empty-state">Aucune activité pour ce filtre.</p>
+          } @else {
+            <div class="activity-table-wrapper">
+              <table class="data-table">
+                <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Utilisateur</th>
+                  <th>Action</th>
+                  <th>Entité</th>
+                  <th>Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                  @for (entry of getFilteredActivity(); track entry._id) {
+                    <tr>
+                      <td>{{ entry.created_at | date: 'dd/MM/y HH:mm' }}</td>
+                      <td>{{ entry.user_email ?? '—' }}</td>
+                      <td>
+                        <span class="action-badge">{{ getActionLabel(entry.action) }}</span>
+                      </td>
+                      <td>{{ entry.entity ?? '—' }}</td>
+                      <td>{{ entry.description }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </article>
+      </section>
+    }
+
+    @if (activeTab() === 'powerbi') {
+      <section class="powerbi-section">
+        <header class="powerbi-header">
+          <div>
+            <span class="dashboard-kicker">Exports décisionnels</span>
+            <h2>Exports Power BI</h2>
+            <p>
+              Téléchargez les données MySQL et MongoDB au format CSV pour alimenter le rapport Power BI Desktop.
+            </p>
+          </div>
+        </header>
+
+        @if (exportMessage()) {
+          <div class="alert alert--success">{{ exportMessage() }}</div>
+        }
+
+        @if (exportError()) {
+          <div class="alert alert--error">{{ exportError() }}</div>
+        }
+
+        <div class="powerbi-grid">
+          @for (exportFile of powerBiExports; track exportFile.filename) {
+            <article class="powerbi-card">
+              <div>
+                <h3>{{ exportFile.label }}</h3>
+                <p>{{ exportFile.description }}</p>
+                <code>{{ exportFile.filename }}</code>
+              </div>
+
+              <button
+                type="button"
+                class="btn btn--primary"
+                [disabled]="exportingFile() === exportFile.filename"
+                (click)="downloadPowerBiExport(exportFile)"
+              >
+                {{ exportingFile() === exportFile.filename ? 'Téléchargement…' : 'Télécharger CSV' }}
+              </button>
+            </article>
+          }
+        </div>
+      </section>
+    }
   }
 </div>

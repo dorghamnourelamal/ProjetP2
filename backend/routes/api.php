@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\PowerBiExportController;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\StatController;
@@ -58,5 +59,13 @@ Route::middleware('auth:sanctum')->group(function () {
         // L’admin peut voir, modifier et supprimer les billets.
         // La création manuelle est désactivée, car les billets sont créés automatiquement après réservation.
         Route::apiResource('tickets', TicketController::class)->except(['store']);
+
+        // Exports CSV pour Power BI
+        Route::get('/powerbi/events.csv', [PowerBiExportController::class, 'events']);
+        Route::get('/powerbi/reservations.csv', [PowerBiExportController::class, 'reservations']);
+        Route::get('/powerbi/tickets.csv', [PowerBiExportController::class, 'tickets']);
+        Route::get('/powerbi/salles.csv', [PowerBiExportController::class, 'salles']);
+        Route::get('/powerbi/activity.csv', [PowerBiExportController::class, 'activity']);
+        Route::get('/powerbi/stats.csv', [PowerBiExportController::class, 'stats']);
     });
 });

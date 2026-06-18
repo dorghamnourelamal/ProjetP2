@@ -18,22 +18,43 @@ export interface StatsOverview {
   totals: {
     events: number;
     reservations: number;
+    tickets: number;
     places_reservees: number;
+    chiffre_affaires: number;
   };
+
   top_events_by_reservations: Array<{
     event_id: number;
     total_places: number;
     total_reservations: number;
-    event?: { id: number; titre: string };
+    event?: {
+      id: number;
+      titre: string;
+    };
   }>;
-  metrics_by_type: Array<{ _id: string; total: number; count: number }>;
+
+  tickets_by_status: Array<{
+    statut: string;
+    total: number;
+  }>;
+
+  places_by_salle: Array<{
+    salle_id: number;
+    salle_nom: string;
+    capacite: number;
+    places_reservees: number;
+    taux_occupation: number;
+  }>;
+
+  metrics_by_type: Array<{
+    _id: string;
+    total: number;
+    count: number;
+  }>;
+
   recent_activity: ActivityLogEntry[];
 }
 
-/**
- * Service de consultation des indicateurs/rapports issus de MongoDB
- * (croisés avec les volumes relationnels MySQL) — alimente le tableau de bord.
- */
 @Injectable({ providedIn: 'root' })
 export class StatService {
   private readonly apiUrl = `${environment.apiUrl}/stats`;
@@ -46,8 +67,14 @@ export class StatService {
 
   activity(filters: { action?: string; user_id?: number } = {}): Observable<{ data: ActivityLogEntry[] }> {
     const params: Record<string, string> = {};
-    if (filters.action) params['action'] = filters.action;
-    if (filters.user_id) params['user_id'] = String(filters.user_id);
+
+    if (filters.action) {
+      params['action'] = filters.action;
+    }
+
+    if (filters.user_id) {
+      params['user_id'] = String(filters.user_id);
+    }
 
     return this.http.get<{ data: ActivityLogEntry[] }>(`${this.apiUrl}/activity`, { params });
   }
