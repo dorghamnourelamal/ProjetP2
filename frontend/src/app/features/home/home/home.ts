@@ -51,10 +51,6 @@ export class Home implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // La page d'accueil est une page publique.
-    // Quand on arrive sur "/", on remet l'application en mode visiteur déconnecté.
-    this.auth.clearSession();
-
     this.loading.set(true);
     this.errorMessage.set(null);
 
