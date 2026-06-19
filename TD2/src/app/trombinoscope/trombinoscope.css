@@ -1,0 +1,22 @@
+.header {
+  background-color: #f27438;
+  border-radius: 8px;
+}
+
+.zone {
+  padding: 15px;
+  min-height: 500px;
+  border-radius: 8px;
+}
+
+.zone-etudiant {
+  background-color: #cfe2ff;
+}
+
+.zone-enseignant {
+  background-color: #fff3cd;
+}
+
+.zone-personnel {
+  background-color: #d1e7dd;
+}

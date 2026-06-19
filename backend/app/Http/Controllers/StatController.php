@@ -55,18 +55,15 @@ class StatController extends Controller
                 ->sortByDesc('places_reservees')
                 ->values(),
 
-            'metrics_by_type' => StatEntry::raw(function ($collection) {
-                return $collection->aggregate([
-                    [
-                        '$group' => [
-                            '_id' => '$metric',
-                            'total' => ['$sum' => '$value'],
-                            'count' => ['$sum' => 1],
-                        ],
-                    ],
-                    ['$sort' => ['total' => -1]],
-                ]);
-            }),
+            'metrics_by_type' => StatEntry::all()
+                ->groupBy('metric')
+                ->map(fn ($items, $metric) => [
+                    '_id'   => $metric ?: 'inconnu',
+                    'total' => $items->sum('value'),
+                    'count' => $items->count(),
+                ])
+                ->sortByDesc('total')
+                ->values(),
 
             'recent_activity' => ActivityLog::orderByDesc('created_at')
                 ->limit(20)

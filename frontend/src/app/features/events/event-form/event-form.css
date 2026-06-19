@@ -2,6 +2,7 @@
   display: block;
 }
 
+/* ── Page layout ── */
 .form-page {
   position: relative;
   min-height: calc(100vh - 64px);
@@ -16,44 +17,129 @@
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(rgba(17, 24, 39, 0.6), rgba(17, 24, 39, 0.7)),
+    linear-gradient(135deg, rgba(0, 10, 30, 0.82), rgba(0, 30, 50, 0.75)),
     url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=60')
       center / cover no-repeat;
 }
 
 .form-page__content {
   width: 100%;
-  max-width: 560px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
+/* ── Header ── */
 .form-page__content h2 {
-  margin: 0 0 0.25rem;
+  margin: 0;
   text-align: center;
   color: #fff;
-  font-size: 1.4rem;
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 16px rgba(0, 180, 216, 0.4);
 }
 
 .back-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   align-self: flex-start;
-  color: #e5e7eb;
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
+  font-size: 0.9rem;
   font-weight: 600;
+  transition: color 0.2s;
 }
 
 .back-link:hover {
-  color: #fff;
-  text-decoration: underline;
+  color: #00c8e8;
 }
 
+/* ── Glass card ── */
 .glass-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(6px);
-  border-radius: 1rem;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  background: rgba(10, 20, 35, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(0, 180, 216, 0.18);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* ── Fields ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.field input,
+.field textarea,
+.field select {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.97rem;
+  padding: 0.7rem 0.9rem;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: #00b4d8;
+  background: rgba(0, 180, 216, 0.08);
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.18);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Date/time pickers: fix native icon color */
+.field input[type="date"],
+.field input[type="time"] {
+  color-scheme: dark;
+}
+
+/* Select arrow */
+.field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300b4d8' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.2rem;
+  cursor: pointer;
+}
+
+.field select option {
+  background: #0d1b2a;
+  color: #fff;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 90px;
 }
 
 .field-row {
@@ -63,27 +149,88 @@
 }
 
 .field-error {
-  color: #dc2626;
-  font-size: 0.85rem;
+  color: #f87171;
+  font-size: 0.8rem;
+  margin-top: 0.1rem;
 }
 
 .field-hint {
   display: block;
-  color: #6b7280;
-  font-size: 0.8rem;
-  margin-top: 0.2rem;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.78rem;
+  margin-top: 0.15rem;
 }
 
+/* File input */
+.field input[type="file"] {
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.field input[type="file"]::-webkit-file-upload-button {
+  background: rgba(0, 180, 216, 0.2);
+  border: 1px solid rgba(0, 180, 216, 0.4);
+  border-radius: 6px;
+  color: #00c8e8;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-right: 0.75rem;
+  transition: background 0.2s;
+}
+
+.field input[type="file"]::-webkit-file-upload-button:hover {
+  background: rgba(0, 180, 216, 0.35);
+}
+
+/* ── Alerts ── */
+.alert--error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* ── Submit button ── */
 .form-actions {
   margin-top: 0.5rem;
 }
 
 .btn--block {
   width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #00b4d8, #0096c7);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
 }
 
+.btn--block:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 180, 216, 0.5);
+}
+
+.btn--block:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Responsive ── */
 @media (max-width: 600px) {
   .field-row {
     grid-template-columns: 1fr;
+  }
+
+  .glass-card {
+    padding: 1.4rem;
   }
 }

@@ -1,0 +1,37 @@
+<div class="container mt-4">
+
+  <div class="header text-center text-white p-3 mb-4">
+    <h1>Trombinoscope UTBM</h1>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-4 zone zone-etudiant">
+      <h3 class="text-center">Zone Étudiant</h3>
+
+      <app-etudiant-card
+        *ngFor="let etudiant of etudiants"
+        [etudiant]="etudiant">
+      </app-etudiant-card>
+    </div>
+
+    <div class="col-md-4 zone zone-enseignant">
+      <h3 class="text-center">Zone Enseignant</h3>
+
+      <app-enseignant-card
+        *ngFor="let enseignant of enseignants"
+        [enseignant]="enseignant">
+      </app-enseignant-card>
+    </div>
+
+    <div class="col-md-4 zone zone-personnel">
+      <h3 class="text-center">Zone Personnel</h3>
+
+      <app-personnel-card
+        *ngFor="let personnel of personnels"
+        [personnel]="personnel">
+      </app-personnel-card>
+    </div>
+
+  </div>
+</div>

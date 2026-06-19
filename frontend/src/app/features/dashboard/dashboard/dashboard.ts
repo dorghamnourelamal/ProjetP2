@@ -270,6 +270,16 @@ export class Dashboard implements OnInit {
     return labels[action] ?? action;
   }
 
+  getMetricLabel(id: string | null): string {
+    if (!id) return 'Activité générale';
+    const labels: Record<string, string> = {
+      event_view:           'Vues d\'événements',
+      reservation_created:  'Réservations créées',
+      ticket_sold:          'Billets vendus',
+    };
+    return labels[id] ?? id;
+  }
+
   private saveBlob(blob: Blob, filename: string): void {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');

@@ -215,7 +215,7 @@
             <div class="metric-stack">
               @for (metric of overview.metrics_by_type; track metric._id) {
                 <article class="metric-card">
-                  <span>{{ metric._id || 'metric_unknown' }}</span>
+                  <span>{{ getMetricLabel(metric._id) }}</span>
                   <strong>{{ metric.total }}</strong>
                   <small>{{ metric.count }} occurrence(s)</small>
                 </article>

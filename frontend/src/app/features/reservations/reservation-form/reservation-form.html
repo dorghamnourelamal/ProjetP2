@@ -1,54 +1,59 @@
-<div class="page">
-  <a routerLink="/events" class="back-link">&larr; Retour aux événements</a>
+<div class="form-page">
+  <div class="form-page__backdrop" aria-hidden="true"></div>
 
-  <h2>Réserver des places</h2>
+  <div class="form-page__content">
+    <a routerLink="/events" class="back-link">&larr; Retour aux événements</a>
 
-  @if (loading()) {
-    <p>Chargement…</p>
-  } @else if (errorMessage() && !event()) {
-    <div class="alert alert--error">{{ errorMessage() }}</div>
-  } @else if (event(); as event) {
-    <p class="reservation-summary">
-      <strong>{{ event.titre }}</strong> — {{ event.date_event | date: 'EEEE d MMMM y' }} à {{ event.heure }}
-      ({{ event.places_disponibles }} places disponibles)
-    </p>
+    <h2>🎟️ Réserver des places</h2>
 
-    <form class="form-card" [formGroup]="form" (ngSubmit)="onSubmit()">
-      @if (errorMessage()) {
-        <div class="alert alert--error">{{ errorMessage() }}</div>
-      }
+    @if (loading()) {
+      <p style="color:#fff;text-align:center">Chargement…</p>
+    } @else if (errorMessage() && !event()) {
+      <div class="alert alert--error">{{ errorMessage() }}</div>
+    } @else if (event(); as event) {
+      <p class="reservation-summary">
+        <strong>{{ event.titre }}</strong>&nbsp;—
+        {{ event.date_event | date: 'EEEE d MMMM y' }} à {{ event.heure }}
+        <span class="places-badge">{{ event.places_disponibles }} places disponibles</span>
+      </p>
 
-      <div class="field">
-        <label for="nom_client">Nom</label>
-        <input id="nom_client" type="text" formControlName="nom_client" />
-        @if (f.nom_client.invalid && f.nom_client.touched) {
-          <small class="field-error">Le nom est obligatoire (2 caractères minimum).</small>
+      <form class="glass-card" [formGroup]="form" (ngSubmit)="onSubmit()">
+        @if (errorMessage()) {
+          <div class="alert alert--error">{{ errorMessage() }}</div>
         }
-      </div>
 
-      <div class="field">
-        <label for="email_client">Email</label>
-        <input id="email_client" type="email" formControlName="email_client" />
-        @if (f.email_client.invalid && f.email_client.touched) {
-          <small class="field-error">Veuillez saisir un email valide.</small>
-        }
-      </div>
+        <div class="field">
+          <label for="nom_client">Nom</label>
+          <input id="nom_client" type="text" formControlName="nom_client" />
+          @if (f.nom_client.invalid && f.nom_client.touched) {
+            <small class="field-error">Le nom est obligatoire (2 caractères minimum).</small>
+          }
+        </div>
 
-      <div class="field">
-        <label for="nombre_places">Nombre de places</label>
-        <input id="nombre_places" type="number" min="1" [max]="event.places_disponibles" formControlName="nombre_places" />
-        @if (f.nombre_places.invalid && f.nombre_places.touched) {
-          <small class="field-error">
-            Veuillez indiquer entre 1 et {{ event.places_disponibles }} place(s).
-          </small>
-        }
-      </div>
+        <div class="field">
+          <label for="email_client">Email</label>
+          <input id="email_client" type="email" formControlName="email_client" />
+          @if (f.email_client.invalid && f.email_client.touched) {
+            <small class="field-error">Veuillez saisir un email valide.</small>
+          }
+        </div>
 
-      <div class="form-actions">
-        <button type="submit" class="btn btn--primary" [disabled]="saving() || event.places_disponibles <= 0">
-          {{ saving() ? 'Confirmation…' : 'Confirmer la réservation' }}
-        </button>
-      </div>
-    </form>
-  }
+        <div class="field">
+          <label for="nombre_places">Nombre de places</label>
+          <input id="nombre_places" type="number" min="1" [max]="event.places_disponibles" formControlName="nombre_places" />
+          @if (f.nombre_places.invalid && f.nombre_places.touched) {
+            <small class="field-error">
+              Veuillez indiquer entre 1 et {{ event.places_disponibles }} place(s).
+            </small>
+          }
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary btn--block" [disabled]="saving() || event.places_disponibles <= 0">
+            {{ saving() ? 'Confirmation…' : 'Confirmer la réservation' }}
+          </button>
+        </div>
+      </form>
+    }
+  </div>
 </div>

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\PowerBiExportController;
@@ -39,6 +40,10 @@ Route::get('/files/{id}/content', [FileController::class, 'content'])->name('fil
 
 // Contact public
 Route::post('/contact', [ContactController::class, 'send']);
+
+// Mot de passe oublié (public)
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink']);
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('reservations', ReservationController::class)->except(['update']);

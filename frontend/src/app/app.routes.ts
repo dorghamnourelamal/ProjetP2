@@ -21,6 +21,8 @@ import { TicketVerify } from './features/tickets/ticket-verify/ticket-verify';
 import { Dashboard } from './features/dashboard/dashboard/dashboard';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
+import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
+import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { Forbidden } from './shared/components/forbidden/forbidden';
 import { NotFound } from './shared/components/not-found/not-found';
 
@@ -29,6 +31,8 @@ export const routes: Routes = [
 
   { path: 'login', component: Login },
   { path: 'register', component: Register },
+  { path: 'forgot-password', component: ForgotPassword },
+  { path: 'reset-password', component: ResetPassword },
 
   { path: 'events', component: EventList },
   { path: 'events/add', component: EventForm, canActivate: [roleGuard(['admin'])] },

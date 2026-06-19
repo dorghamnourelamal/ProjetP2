@@ -9,7 +9,7 @@
   @if (loading()) {
     <p>Chargement…</p>
   } @else {
-    <form class="form-card glass-card" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form class="glass-card" [formGroup]="form" (ngSubmit)="onSubmit()">
       @if (errorMessage()) {
         <div class="alert alert--error">{{ errorMessage() }}</div>
       }
