@@ -2,29 +2,114 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="28a2dc7f-26db-4626-89fd-6e3cf7895910" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/guide" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUIDE_EXECUTION.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/.prettierrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/angular.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/app.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/app.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/app.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/app.routes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/app.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/app.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/enseignant-card/enseignant-card.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/enseignant-card/enseignant-card.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/enseignant-card/enseignant-card.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/enseignant-card/enseignant-card.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/etudiant-card/etudiant-card.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/etudiant-card/etudiant-card.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/etudiant-card/etudiant-card.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/etudiant-card/etudiant-card.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/personnel-card/personnel-card.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/personnel-card/personnel-card.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/personnel-card/personnel-card.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/personnel-card/personnel-card.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/trombinoscope/trombinoscope.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/trombinoscope/trombinoscope.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/trombinoscope/trombinoscope.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/app/trombinoscope/trombinoscope.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/src/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/tsconfig.app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD2/tsconfig.spec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Http/Controllers/Auth/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Http/Controllers/Auth/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Http/Controllers/ContactController.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Http/Controllers/ContactController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Http/Controllers/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Http/Controllers/Controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Http/Controllers/EventController.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Http/Controllers/EventController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/app/Http/Controllers/FileController.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Http/Controllers/FileController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/database/migrations/2026_06_07_125833_create_personal_access_tokens_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Http/Controllers/ForgotPasswordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Http/Controllers/ForgotPasswordController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Http/Controllers/PowerBiExportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Http/Controllers/PowerBiExportController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Http/Middleware/EnsureUserHasRole.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Http/Middleware/EnsureUserHasRole.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Mail/ContactMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Mail/ContactMessage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Mail/EventCancellation.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Mail/EventCancellation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Mail/ReservationConfirmation.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Mail/ReservationConfirmation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Models/Mongo/ActivityLog.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Models/Mongo/ActivityLog.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Models/Mongo/FileMeta.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Models/Mongo/FileMeta.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Models/Mongo/StatEntry.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Models/Mongo/StatEntry.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Providers/AppServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Services/ActivityLogger.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Services/ActivityLogger.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/Services/StatRecorder.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/Services/StatRecorder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/bootstrap/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/bootstrap/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/auth.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/cache.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/cors.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/cors.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/filesystems.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/filesystems.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/logging.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/logging.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/mail.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/mail.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/queue.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/queue.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/sanctum.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/sanctum.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/services.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config/session.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/session.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/factories/UserFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/factories/UserFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/0001_01_01_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/0001_01_01_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/0001_01_01_000001_create_cache_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/0001_01_01_000001_create_cache_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/0001_01_01_000002_create_jobs_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/0001_01_01_000002_create_jobs_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/2026_06_06_125637_create_salles_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/2026_06_06_125637_create_salles_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/2026_06_06_125638_create_events_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/2026_06_06_125638_create_events_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/2026_06_06_125642_create_tickets_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/2026_06_06_125642_create_tickets_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/2026_06_07_000001_add_role_to_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/2026_06_07_000001_add_role_to_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/2026_06_07_000002_add_fields_to_tickets_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/2026_06_07_000002_add_fields_to_tickets_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/2026_06_07_125250_create_personal_access_tokens_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/2026_06_07_125250_create_personal_access_tokens_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/migrations/2026_06_11_125730_add_duree_minutes_to_events_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/migrations/2026_06_11_125730_add_duree_minutes_to_events_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/seeders/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/database/seeders/EventSalleSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/seeders/EventSalleSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/public/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/resources/views/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/resources/views/welcome.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tests/Feature/ExampleTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tests/Feature/ExampleTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tests/TestCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tests/TestCase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tests/Unit/ExampleTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tests/Unit/ExampleTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/core/guards/auth-guard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/core/guards/auth-guard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/core/guards/role-guard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/core/guards/role-guard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/core/interceptors/auth-interceptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/core/interceptors/auth-interceptor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/core/models/salle.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/core/models/salle.model.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/core/services/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/core/services/auth.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/core/services/event.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/core/services/event.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/auth/login/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/auth/login/login.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/auth/login/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/auth/login/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/features/auth/login/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/auth/login/login.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/features/auth/register/register.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/auth/register/register.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/events/event-form/event-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/events/event-form/event-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/events/event-form/event-form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/events/event-form/event-form.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/events/event-list/event-list.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/events/event-list/event-list.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/home/home/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/home/home/home.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/home/home/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/home/home/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/event-card/event-card.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/event-card/event-card.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/event-card/event-card.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/event-card/event-card.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/event-card/event-card.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/event-card/event-card.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/navbar/navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/navbar/navbar.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/navbar/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/navbar/navbar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/events/event-list/event-list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/events/event-list/event-list.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/home/home/home.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/home/home/home.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/reservations/reservation-form/reservation-form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/reservations/reservation-form/reservation-form.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/reservations/reservation-list/reservation-list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/reservations/reservation-list/reservation-list.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/salles/salle-form/salle-form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/salles/salle-form/salle-form.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/salles/salle-list/salle-list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/salles/salle-list/salle-list.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/features/tickets/ticket-form/ticket-form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/features/tickets/ticket-form/ticket-form.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/shared/components/navbar/navbar.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/shared/components/navbar/navbar.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/environments/environment.production.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/environments/environment.production.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/environments/environment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/environments/environment.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +123,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP">
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="$PROJECT_DIR$/../../../../xampp/php/php.exe">
     <include_path>
       <path value="$PROJECT_DIR$/backend/vendor/composer" />
       <path value="$PROJECT_DIR$/backend/vendor/psr/container" />
@@ -162,6 +247,8 @@
       <path value="$PROJECT_DIR$/backend/vendor/theseer/tokenizer" />
       <path value="$PROJECT_DIR$/backend/vendor/mongodb/laravel-mongodb" />
       <path value="$PROJECT_DIR$/backend/vendor/mongodb/mongodb" />
+      <path value="$PROJECT_DIR$/backend/vendor/dasprid/enum" />
+      <path value="$PROJECT_DIR$/backend/vendor/bacon/bacon-qr-code" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -173,22 +260,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/eoutl/Desktop/Projet-webB-si",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\eoutl\\Desktop\\Projet-webB-si\\frontend\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dorgh/PhpstormProjects/projet&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\dorgh\\PhpstormProjects\\projet\\frontend\\node_modules\\prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\dorgh\\PhpstormProjects\\projet\\frontend\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="npm.Angular CLI Server">
     <configuration name="Angular Application" type="JavascriptDebugType" uri="http://localhost:4200">
       <method v="2" />
@@ -211,8 +299,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PS-253.32098.40" />
-        <option value="bundled-php-predefined-a98d8de5180a-0e0d91225499-com.jetbrains.php.sharedIndexes-PS-253.32098.40" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-PS-261.23567.149" />
+        <option value="bundled-php-predefined-a98d8de5180a-022fa7b8ab75-com.jetbrains.php.sharedIndexes-PS-261.23567.149" />
       </set>
     </attachedChunks>
   </component>
@@ -229,6 +317,10 @@
       <workItem from="1781029676873" duration="5582000" />
       <workItem from="1781037591839" duration="565000" />
       <workItem from="1781103564168" duration="7226000" />
+      <workItem from="1781272188963" duration="6387000" />
+      <workItem from="1781466872519" duration="44000" />
+      <workItem from="1781896023182" duration="4046000" />
+      <workItem from="1781974857956" duration="7195000" />
     </task>
     <servers />
   </component>

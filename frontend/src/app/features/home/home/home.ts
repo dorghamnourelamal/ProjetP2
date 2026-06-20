@@ -43,9 +43,6 @@ export class Home implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    this.auth.clearSession();
-
     this.loading.set(true);
     this.errorMessage.set(null);
 
