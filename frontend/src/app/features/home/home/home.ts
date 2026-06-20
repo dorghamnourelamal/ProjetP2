@@ -7,11 +7,6 @@ import { AuthService } from '../../../core/services/auth';
 import { ContactService } from '../../../core/services/contact';
 import { Event } from '../../../core/models/event.model';
 
-/**
- * Page d'accueil publique : présente l'application, met en avant
- * quelques événements à venir et oriente le visiteur vers la liste complète,
- * la réservation ou le contact.
- */
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -32,9 +27,6 @@ export class Home implements OnInit {
   readonly contactSending = signal(false);
   readonly contactFeedback = signal<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  /**
-   * Met en avant jusqu'à 3 événements à venir, triés par date la plus proche.
-   */
   readonly featuredEvents = computed(() => {
     const today = new Date().toISOString().slice(0, 10);
 
@@ -51,8 +43,7 @@ export class Home implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // La page d'accueil est une page publique.
-    // Quand on arrive sur "/", on remet l'application en mode visiteur déconnecté.
+
     this.auth.clearSession();
 
     this.loading.set(true);

@@ -7,13 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-/**
- * Reçoit les messages envoyés depuis le formulaire "Support par email" de la page
- * d'accueil et les transmet par email au propriétaire du site.
- */
 class ContactController extends Controller
 {
-    /** Adresse du propriétaire du site recevant les messages de contact. */
+
     private const OWNER_EMAIL = 'eventify439@gmail.com';
 
     public function send(Request $request)

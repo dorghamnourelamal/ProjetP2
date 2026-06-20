@@ -8,11 +8,6 @@ import { Reservation } from '../../../core/models/reservation.model';
 
 type SortKey = 'nom_client' | 'nombre_places' | 'created_at';
 
-/**
- * Liste des réservations : un client connecté ne voit que ses propres réservations
- * (filtré côté backend sur son email), un admin voit tout. Recherche et tri
- * réalisés côté client via signaux + computed, sans appel réseau supplémentaire.
- */
 @Component({
   selector: 'app-reservation-list',
   standalone: true,

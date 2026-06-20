@@ -7,7 +7,6 @@ import { ReservationService } from '../../../core/services/reservation';
 import { Reservation } from '../../../core/models/reservation.model';
 import { TicketInput, TicketStatut } from '../../../core/models/ticket.model';
 
-/** Formulaire d'émission/édition de billet (Reactive Forms), réservé aux administrateurs. */
 @Component({
   selector: 'app-ticket-form',
   standalone: true,

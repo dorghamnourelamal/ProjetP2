@@ -10,9 +10,6 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-/**
- * Email d'annulation envoyé à chaque participant d'un événement supprimé.
- */
 class EventCancellation extends Mailable
 {
     use Queueable, SerializesModels;

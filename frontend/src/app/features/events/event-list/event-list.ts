@@ -9,11 +9,6 @@ import { EventCard } from '../../../shared/components/event-card/event-card';
 
 type SortKey = 'date_event' | 'titre' | 'prix' | 'places_disponibles';
 
-/**
- * Liste des événements : consommation asynchrone via HttpClient/RxJS,
- * puis tri et filtrage 100% côté client (signaux + computed) sans nouvel appel réseau.
- * Démontre aussi la communication enfant -> parent via les @Output de <app-event-card>.
- */
 @Component({
   selector: 'app-event-list',
   standalone: true,
@@ -32,7 +27,6 @@ export class EventList implements OnInit {
   readonly sortAsc = signal(true);
   readonly onlyAvailable = signal(false);
 
-  /** Liste filtrée puis triée, recalculée automatiquement (computed) à chaque changement. */
   readonly filteredEvents = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
     const onlyAvailable = this.onlyAvailable();
@@ -40,7 +34,7 @@ export class EventList implements OnInit {
     const asc = this.sortAsc();
 
     let result = this.eventsSignal().filter((event) => {
-      // Les utilisateurs ne voient pas les événements annulés
+
       if (!this.auth.isAdmin() && event.statut === 'annulé') return false;
 
       const matchesSearch =

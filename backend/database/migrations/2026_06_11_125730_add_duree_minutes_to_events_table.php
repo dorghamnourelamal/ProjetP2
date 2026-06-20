@@ -6,13 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Ajoute la durée d'un événement en minutes.
-     * Exemple :
-     * 60  = 1 heure
-     * 90  = 1h30
-     * 120 = 2 heures
-     */
+
     public function up(): void
     {
         Schema::table('events', function (Blueprint $table) {

@@ -11,9 +11,7 @@ use App\Models\User;
 
 class ForgotPasswordController extends Controller
 {
-    /**
-     * Envoie un email avec le lien de réinitialisation.
-     */
+
     public function sendResetLink(Request $request)
     {
         $request->validate([
@@ -24,10 +22,8 @@ class ForgotPasswordController extends Controller
 
         $token = Str::random(64);
 
-        // Supprimer l'ancien token s'il existe
         DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
-        // Stocker le nouveau token (hashé)
         DB::table('password_reset_tokens')->insert([
             'email'      => $request->email,
             'token'      => Hash::make($token),
@@ -48,9 +44,6 @@ class ForgotPasswordController extends Controller
         ]);
     }
 
-    /**
-     * Réinitialise le mot de passe avec le token reçu par email.
-     */
     public function resetPassword(Request $request)
     {
         $request->validate([
@@ -70,7 +63,6 @@ class ForgotPasswordController extends Controller
             ], 422);
         }
 
-        // Token expiré après 60 minutes
         if (now()->diffInMinutes($record->created_at) > 60) {
             DB::table('password_reset_tokens')->where('email', $request->email)->delete();
             return response()->json([

@@ -47,11 +47,8 @@ export const routes: Routes = [
 
   { path: 'reservations', component: ReservationList, canActivate: [authGuard] },
 
-  // Page ouverte par le scan du QR code
   { path: 'tickets/verify/:code', component: TicketVerify },
 
-  // Les billets sont créés automatiquement après réservation.
-  // L’admin peut seulement les consulter, les modifier ou les supprimer.
   { path: 'tickets', component: TicketList, canActivate: [roleGuard(['admin'])] },
   { path: 'tickets/:id/edit', component: TicketForm, canActivate: [roleGuard(['admin'])] },
 

@@ -3,10 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth';
 
-/**
- * Barre de navigation principale : adapte les liens visibles selon
- * l'état d'authentification et le rôle de l'utilisateur courant (signaux AuthService).
- */
 @Component({
   selector: 'app-navbar',
   standalone: true,

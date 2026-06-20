@@ -15,11 +15,6 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-/**
- * Email envoyé au client juste après la création d'une réservation : récapitulatif
- * de la réservation et billet généré au format PDF (à présenter à l'entrée de
- * l'événement), joint automatiquement en pièce jointe.
- */
 class ReservationConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
@@ -43,12 +38,6 @@ class ReservationConfirmation extends Mailable
         );
     }
 
-    /**
-     * Génère le billet PDF à la volée (via DomPDF) et le joint au mail.
-     * Chaque billet contient son QR code encodé en SVG base64.
-     *
-     * @return array<int, Attachment>
-     */
     public function attachments(): array
     {
         $this->reservation->load('tickets');

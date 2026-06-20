@@ -4,7 +4,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SalleService, SalleInput } from '../../../core/services/salle';
 
-/** Formulaire Ajout/Édition de salle (Reactive Forms), réservé aux administrateurs. */
 @Component({
   selector: 'app-salle-form',
   standalone: true,

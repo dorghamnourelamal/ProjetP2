@@ -8,12 +8,10 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+
     public function run(): void
     {
-        // Compte administrateur de référence (gestion complète : CRUD events/salles/tickets)
+
         User::firstOrCreate(
             ['email' => 'admin@evenements.test'],
             [
@@ -23,7 +21,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Compte utilisateur de test (réservations uniquement)
         User::firstOrCreate(
             ['email' => 'user@evenements.test'],
             [

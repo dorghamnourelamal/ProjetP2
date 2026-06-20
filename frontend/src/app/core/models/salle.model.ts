@@ -8,7 +8,6 @@ export interface Salle {
   updated_at?: string;
 }
 
-/** Vue allégée d'un événement, telle que renvoyée imbriquée dans une salle. */
 export interface EventSummary {
   id: number;
   titre: string;

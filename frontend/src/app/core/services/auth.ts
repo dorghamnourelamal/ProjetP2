@@ -7,11 +7,6 @@ import { AuthResponse, LoginPayload, RegisterPayload, User } from '../models/use
 const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
 
-/**
- * Service central d'authentification : consomme l'API Sanctum avec token Bearer,
- * conserve la session courante dans des signaux et la persiste dans localStorage
- * pour rester connecté après rafraîchissement ou ouverture d'un nouvel onglet.
- */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apiUrl = `${environment.apiUrl}/auth`;

@@ -123,13 +123,10 @@ class EventController extends Controller
         $titre = $event->titre;
         $eventId = $event->id;
 
-        // Charger les réservations et la salle
         $event->load('reservations', 'salle');
 
-        // Marquer l'événement comme annulé (pas de suppression physique)
         $event->update(['statut' => 'annulé']);
 
-        // Envoyer un email d'annulation à chaque participant
         foreach ($event->reservations as $reservation) {
             try {
                 Mail::to($reservation->email_client)

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Event, EventInput } from '../models/event.model';
 
-
 @Injectable({
   providedIn: 'root',
 })

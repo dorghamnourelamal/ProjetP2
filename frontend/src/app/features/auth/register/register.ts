@@ -10,14 +10,12 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth';
 
-
 function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
   const confirmation = control.get('password_confirmation')?.value;
 
   return password && confirmation && password !== confirmation ? { passwordsMismatch: true } : null;
 }
-
 
 @Component({
   selector: 'app-register',

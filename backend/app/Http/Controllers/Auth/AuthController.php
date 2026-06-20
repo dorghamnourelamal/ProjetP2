@@ -15,9 +15,6 @@ class AuthController extends Controller
     {
     }
 
-    /**
-     * Inscription d'un nouvel utilisateur (rôle "user" par défaut).
-     */
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -43,9 +40,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-    /**
-     * Connexion : retourne un token Sanctum + l'utilisateur authentifié.
-     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -73,9 +67,6 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Déconnexion : révoque le token courant.
-     */
     public function logout(Request $request)
     {
         $user = $request->user();
@@ -86,9 +77,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'Déconnecté avec succès']);
     }
 
-    /**
-     * Retourne l'utilisateur authentifié courant.
-     */
     public function me(Request $request)
     {
         return response()->json($request->user());

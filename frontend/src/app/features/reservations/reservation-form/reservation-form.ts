@@ -8,11 +8,6 @@ import { AuthService } from '../../../core/services/auth';
 import { Event } from '../../../core/models/event.model';
 import { ReservationInput } from '../../../core/models/reservation.model';
 
-/**
- * Formulaire de réservation (Reactive Forms) : pré-remplit les coordonnées du client
- * connecté, valide le nombre de places par rapport aux places encore disponibles,
- * et est protégé par authGuard côté routes (un visiteur doit se connecter pour réserver).
- */
 @Component({
   selector: 'app-reservation-form',
   standalone: true,

@@ -1,0 +1,46 @@
+# Guide d'exécution — Eventify
+
+## Prérequis
+- XAMPP (MySQL)
+- MongoDB
+- PHP 8.2+, Composer
+- Node.js 18+
+
+---
+
+## Lancer le projet
+
+### 1. Démarrer MySQL
+XAMPP Control Panel → **Start MySQL**
+
+### 2. Démarrer MongoDB
+```bash
+mongod
+```
+
+### 3. Backend
+```bash
+cd backend
+composer install
+php artisan migrate
+php artisan storage:link
+php artisan serve
+```
+→ `http://localhost:8000`
+
+### 4. Frontend
+```bash
+cd frontend
+npm install
+ng serve
+```
+→ `http://localhost:4200`
+
+---
+
+## Comptes de démonstration
+
+| Rôle | Email | Mot de passe |
+|------|-------|--------------|
+| Admin | admin@evenements.test | password |
+| User | user@evenements.test | password |

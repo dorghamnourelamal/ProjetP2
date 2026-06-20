@@ -3,11 +3,6 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth';
 
-/**
- * Intercepteur HTTP fonctionnel :
- *  - ajoute le token Sanctum (Bearer) sur chaque requête vers l'API,
- *  - efface la session locale en cas de réponse 401 (token expiré/invalide).
- */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();

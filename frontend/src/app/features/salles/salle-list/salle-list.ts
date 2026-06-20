@@ -8,11 +8,6 @@ import { Salle } from '../../../core/models/salle.model';
 
 type SortKey = 'nom' | 'capacite';
 
-/**
- * Liste des salles : lecture publique, gestion (ajout/édition/suppression)
- * réservée aux administrateurs (roleGuard côté routes + vérification d'affichage ici).
- * Recherche et tri appliqués côté client via signaux + computed.
- */
 @Component({
   selector: 'app-salle-list',
   standalone: true,

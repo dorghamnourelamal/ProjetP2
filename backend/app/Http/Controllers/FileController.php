@@ -14,10 +14,6 @@ class FileController extends Controller
     {
     }
 
-    /**
-     * Liste les fichiers, avec filtre optionnel par entité liée.
-     * GET /api/files?related_type=Event&related_id=5
-     */
     public function index(Request $request)
     {
         $query = FileMeta::query();
@@ -35,10 +31,6 @@ class FileController extends Controller
         );
     }
 
-    /**
-     * Affiche le contenu d'un fichier stocké.
-     * GET /api/files/{id}/content
-     */
     public function content(string $id)
     {
         $meta = FileMeta::findOrFail($id);
@@ -56,10 +48,6 @@ class FileController extends Controller
         ]);
     }
 
-    /**
-     * Upload d'un fichier + enregistrement de ses métadonnées dans MongoDB.
-     * POST /api/files
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -103,10 +91,6 @@ class FileController extends Controller
         ], 201);
     }
 
-    /**
-     * Supprime un fichier et ses métadonnées.
-     * DELETE /api/files/{id}
-     */
     public function destroy(Request $request, string $id)
     {
         $meta = FileMeta::findOrFail($id);

@@ -188,7 +188,6 @@ class PowerBiExportController extends Controller
         return response()->streamDownload(function () use ($rows) {
             $handle = fopen('php://output', 'w');
 
-            // BOM UTF-8 pour que Power BI / Excel lisent correctement les accents.
             fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
             if ($rows->isEmpty()) {
